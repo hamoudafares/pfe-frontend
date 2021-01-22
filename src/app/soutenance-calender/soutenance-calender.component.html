@@ -1,0 +1,39 @@
+<ng-container *ngIf="mode==modeEnum[1]">
+
+  <h2>Soutenances pour le jour: {{date}}</h2>
+
+  <div id="soutenances">
+    <div>
+
+    </div>
+    <div class="soutenance-column" *ngFor="let column of soutenancesAtDay; let i = index">
+      <div class="soutenance-block" *ngFor="let soutenance of column"
+           style="top: {{getCalenderBlockDisplacement(soutenance)}}px; height: {{getCalenderBlockSize(soutenance)}}px;">
+        <b>{{soutenance.getEtudiant()}}</b> <br>
+        {{soutenance.getSujet()}}<br>
+        {{soutenance.getSalle()}}<br>
+        {{soutenance.getDuration()}}h<br>
+      </div>
+    </div>
+
+  </div>
+</ng-container>
+
+<ng-container *ngIf="mode==modeEnum[0]">
+  <div>
+    <div class="soutenance-line" *ngFor="let week of getNumberOfWeeks()">
+      {{week}}
+      <ng-container  *ngFor="let date of getDatesAtWeek(week)">
+        <div class="linear-soutenance-block" *ngIf="isInMonth(date); else elseBlock" routerLink="/Day/{{getDateFormatted(date)}}">
+          {{date}} <br>
+          <span [innerHTML]="getNumberOfSoutenancesAtDay(date)"></span>
+        </div>
+        <ng-template #elseBlock>
+          <div class="linear-soutenance-block-inactive">
+            --
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

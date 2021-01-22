@@ -1,0 +1,43 @@
+
+.soutenance-column{
+  display: inline-block;
+  width: 200px;
+  margin: 10px;
+
+}
+
+.soutenance-block{
+  position: absolute;
+  width: 200px;
+  border-radius: 20px;
+  border: solid #FF8888;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.linear-soutenance-block{
+  display: inline-block;
+  width: 200px;
+  height: 100px;
+  border-radius: 20px;
+  border: solid #FF8888;
+  text-align: center;
+  vertical-align: middle;
+  margin: 10px;
+}
+
+
+.linear-soutenance-block-inactive{
+  display: inline-block;
+  width: 200px;
+  height: 100px;
+  border-radius: 20px;
+  border: solid #AA8888;
+  text-align: center;
+  vertical-align: middle;
+  margin: 10px;
+}
+
+.soutenance-line{
+  height: 150px;
+}
