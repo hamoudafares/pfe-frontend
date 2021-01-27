@@ -11,6 +11,8 @@ import { ViewSoutenanceComponent } from './view-soutenance/view-soutenance.compo
 import { SettingsComponent } from './settings/settings.component';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { SubmitSoutenanceFormComponent } from './submit-soutenance-form/submit-soutenance-form.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminUploadStudentsComponent } from './admin-upload-students/admin-upload-students.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { SubmitSoutenanceFormComponent } from './submit-soutenance-form/submit-s
     ViewSoutenanceComponent,
     SettingsComponent,
     AuthenticateComponent,
-    SubmitSoutenanceFormComponent
+    SubmitSoutenanceFormComponent,
+    AdminDashboardComponent,
+    AdminUploadStudentsComponent
   ],
   imports: [
     BrowserModule,
