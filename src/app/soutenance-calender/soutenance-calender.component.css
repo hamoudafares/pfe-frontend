@@ -2,18 +2,47 @@
 .soutenance-column{
   display: inline-block;
   width: 200px;
-  margin: 10px;
+  margin-left: 0px;
+  position: absolute;
 
+}
+
+.soutenance-column-dates{
+  display: inline-block;
+  width: 100px;
+  margin: 0px;
+  position: relative;
+}
+
+.soutenance-column-dates> table tr td, th{
+  border-left: none;
 }
 
 .soutenance-block{
+  margin: 0px;
   position: absolute;
   width: 200px;
-  border-radius: 20px;
-  border: solid #FF8888;
+  border: solid #BBBBCC;
   text-align: center;
   vertical-align: middle;
+  overflow: hidden;
 }
+
+
+
+
+.soutenance-block-header{
+  margin: -1px;
+  width: 100px;
+  border: solid #DDDDEE;
+  border-left: none;
+  border-right: none;
+  text-align: center;
+  vertical-align: middle;
+  height: 75px;
+}
+
+
 
 .linear-soutenance-block{
   display: inline-block;
@@ -40,4 +69,35 @@
 
 .soutenance-line{
   height: 150px;
+}
+
+.fc-day{
+  min-width: 150px;
+  text-align: center;
+  vertical-align: middle;
+  border-width: 2px;
+}
+
+.fc-day-inactive{
+  min-width: 150px;
+  text-align: center;
+  vertical-align: middle;
+  border-width: 2px;
+}
+
+.fc-day-head{
+  min-width: 150px;
+  text-align: center;
+  vertical-align: middle;
+  border-width: 2px;
+}
+
+.full{
+  min-height: 100vh;
+}
+
+#soutenances{
+  margin-top: 5px;
+  display: inline;
+  position: relative;
 }

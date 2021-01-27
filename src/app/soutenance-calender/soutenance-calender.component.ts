@@ -5,8 +5,8 @@ import {ActivatedRoute, Route, Router} from "@angular/router";
 import {generateI18nBrowserWebpackConfigFromContext} from "@angular-devkit/build-angular/src/utils/webpack-browser-config";
 
 
-const DIV_SIZE = 100;
-const DIV_MARGIN = 10;
+const DIV_SIZE = 75;
+const DIV_MARGIN = -2;
 
 @Component({
   selector: 'app-soutenance-calender',
@@ -28,6 +28,10 @@ export class SoutenanceCalenderComponent implements OnInit {
   date: String = '';
 
   datesArray: string[]; // used to store all dates in the month (and the few days before/after) for ease of iteration
+
+  heightValues: number[][]; // used for height of divs
+
+  topValues: number[][]; //used for displacement of divs from top
 
   constructor(private soutenanceService: SoutenanceService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
@@ -60,12 +64,17 @@ export class SoutenanceCalenderComponent implements OnInit {
 
     this.soutenancesAtDay = [];
     this.soutenancesAtDay[0] = [];
+    this.heightValues = [];
+    this.heightValues[0] = [];
+    this.topValues = [];
+    this.topValues[0] = [];
 
     let columns = 0;
 
     for(let soutenance of soutenances){ // on insere les soutenances de maniere "parallele", c'est a dire si deux
                                         // ne peuvent pas etre inséres simulatneement (8h->10h et 9h->11h), on les
                                         // inseres dans deux colonnes paralleles pour mieux visualiser
+
 
 
       for (let i = 0; i <= columns; i++) { //on essaye d'inserer chaque soutenances dans une colonne conveniente
@@ -89,6 +98,8 @@ export class SoutenanceCalenderComponent implements OnInit {
         }
         if(insertable){
           this.soutenancesAtDay[i].push(soutenance); // si la colonne est inserable dans i, on l'insere et on quitte
+          this.heightValues[i].push(this.getCalenderBlockSize(soutenance));
+          this.topValues[i].push(this.getCalenderBlockDisplacement(soutenance));
           break;
         }
         else {
@@ -96,6 +107,8 @@ export class SoutenanceCalenderComponent implements OnInit {
           if(i == columns){ //si on a essayer toutes les colonnes, on crée une nouvelle colonne
             columns++;
             this.soutenancesAtDay[columns] = [];
+            this.heightValues[columns] = [];
+            this.topValues[columns] = []
           }
         }
 
@@ -178,7 +191,7 @@ export class SoutenanceCalenderComponent implements OnInit {
 
   getCalenderBlockDisplacement(soutenance: Soutenance): number{
     let hour = soutenance.getHourAndMinuteAsFraction();
-    return (hour-8)*(DIV_SIZE)+DIV_MARGIN;
+    return (hour-8)*(DIV_SIZE);
 
   }
 

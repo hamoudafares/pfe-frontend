@@ -1,39 +1,79 @@
-<ng-container *ngIf="mode==modeEnum[1]">
+<div class="container-fluid block full" id="page-content">
+  <ng-container *ngIf="mode==modeEnum[1]">
 
-  <h2>Soutenances pour le jour: {{date}}</h2>
+    <h2>Soutenances pour le jour: {{date}}</h2>
 
-  <div id="soutenances">
-    <div>
+    <div id="soutenances">
+      <div class="soutenance-column-dates fc-day fc-unthemed">
+        <table class="">
+          <tr *ngFor="let i of [8,9,10,11,12,13,14,15,16]">
+            <th class="soutenance-block-header">
+              {{i}}h
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div class="soutenance-column fc-unthemed" *ngFor="let column of soutenancesAtDay; let i = index"
+          style="left: {{(i)*198+100}}px">
+          <div class="soutenance-block fc fc-unthemed" *ngFor="let soutenance of column; let j = index"
+               style="top:{{topValues[i][j]}}px; height:{{heightValues[i][j]}}px;">
+            <b>{{soutenance.getEtudiant()}} </b> <br>
+               {{soutenance.getSujet()}}         <br>
 
-    </div>
-    <div class="soutenance-column" *ngFor="let column of soutenancesAtDay; let i = index">
-      <div class="soutenance-block" *ngFor="let soutenance of column"
-           style="top: {{getCalenderBlockDisplacement(soutenance)}}px; height: {{getCalenderBlockSize(soutenance)}}px;">
-        <b>{{soutenance.getEtudiant()}}</b> <br>
-        {{soutenance.getSujet()}}<br>
-        {{soutenance.getSalle()}}<br>
-        {{soutenance.getDuration()}}h<br>
+            <ng-container *ngIf="heightValues[i][j]>75">
+              {{soutenance.getSalle()}}         <br>
+            </ng-container>
+
+                <ng-container *ngIf="heightValues[i][j]>100">
+                  {{soutenance.getDuration()}}h     <br>
+                </ng-container>
+
+          </div>
       </div>
     </div>
+  </ng-container>
 
-  </div>
-</ng-container>
+  <ng-container *ngIf="mode==modeEnum[0]">
+    <table class="fc fc-view fc-day-grid fc-unthemed" >
+      <thead class="fc-header">
+        <tr class="fc-widget-header">
+          <th class="fc-widget-header fc-day-top fc-day-head">
+            Lundi
+          </th>
+          <th class="fc-widget-header fc-day-top fc-day-head">
+            Mardi
+          </th>
+          <th class="fc-widget-header fc-day-top fc-day-head">
+            Mercredi
+          </th>
+          <th class="fc-widget-header fc-day-top fc-day-head">
+            Jeudi
+          </th>
+          <th class="fc-widget-header fc-day-top fc-day-head">
+            Vendredi
+          </th>
+          <th class="fc-widget-header fc-day-top fc-day-head">
+            Samedi
+          </th>
 
-<ng-container *ngIf="mode==modeEnum[0]">
-  <div>
-    <div class="soutenance-line" *ngFor="let week of getNumberOfWeeks()">
-      {{week}}
-      <ng-container  *ngFor="let date of getDatesAtWeek(week)">
-        <div class="linear-soutenance-block" *ngIf="isInMonth(date); else elseBlock" routerLink="/Day/{{getDateFormatted(date)}}">
-          {{date}} <br>
-          <span [innerHTML]="getNumberOfSoutenancesAtDay(date)"></span>
-        </div>
-        <ng-template #elseBlock>
-          <div class="linear-soutenance-block-inactive">
-            --
-          </div>
-        </ng-template>
-      </ng-container>
-    </div>
-  </div>
-</ng-container>
+        </tr>
+      </thead>
+      <tbody class="fc-body">
+        <tr class="soutenance-line fc-row" *ngFor="let week of getNumberOfWeeks()">
+          <ng-container  *ngFor="let date of getDatesAtWeek(week)">
+            <td class="fc-day-top fc-day" *ngIf="isInMonth(date); else elseBlock" routerLink="/Day/{{getDateFormatted(date)}}">
+              <span class="fc-day-number">{{date}}</span> <br>
+              <span [innerHTML]="getNumberOfSoutenancesAtDay(date)"></span>
+            </td>
+            <ng-template #elseBlock>
+              <td class="fc-day-inactive">
+                --
+              </td>
+            </ng-template>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+</div>

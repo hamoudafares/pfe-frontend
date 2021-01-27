@@ -24,7 +24,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/css/bootstrap.min.css",
+              "src/css/main.css",
+              "src/css/plugins.css",
+              "src/css/themes.css"
             ],
             "scripts": []
           },
