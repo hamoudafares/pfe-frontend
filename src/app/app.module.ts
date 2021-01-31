@@ -9,8 +9,20 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { ViewProfileComponent } from './view-profile/view-profile.component';
 import { ViewSoutenanceComponent } from './view-soutenance/view-soutenance.component';
 import { SettingsComponent } from './settings/settings.component';
-import { AuthenticateComponent } from './authenticate/authenticate.component';
+import { SignupComponent } from './signup/signup.component';
 import { SubmitSoutenanceFormComponent } from './submit-soutenance-form/submit-soutenance-form.component';
+import { LoginComponent } from './login/login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { HomeComponent } from './home/home.component';
+import { AdminComponent } from './admin/admin.component';
+import { fakeBackendProvider } from './helpers/fake-backend';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { PfeComponent } from './pfe/pfe.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -21,14 +33,31 @@ import { SubmitSoutenanceFormComponent } from './submit-soutenance-form/submit-s
     ViewProfileComponent,
     ViewSoutenanceComponent,
     SettingsComponent,
-    AuthenticateComponent,
-    SubmitSoutenanceFormComponent
+    SignupComponent,
+    SubmitSoutenanceFormComponent,
+    LoginComponent,
+    ResetPasswordComponent,
+    HomeComponent,
+    AdminComponent,
+    PfeComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    CommonModule,
+    Ng2SearchPipeModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
+],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

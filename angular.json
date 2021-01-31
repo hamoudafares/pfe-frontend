@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "pfe-frontend"
+    }
+  },
+  "defaultProject": "pfe-frontend",
+  "cli": {
+    "analytics": "e93fe92f-c0c3-4a63-97fb-15cd4d9a86a7"
+  }
 }

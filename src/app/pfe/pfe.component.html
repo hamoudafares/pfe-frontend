@@ -1,0 +1,35 @@
+<div class="panel panel-primary">
+    <div class="panel-heading" style="width: 100%">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchText">
+          </div>
+      <h2>Liste des pfes</h2>
+    </div>
+    <div class="panel-body">
+        
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Sujet</th>
+            <th>rapport</th>
+            <th>entreprise</th>
+            <th>Mission</th>
+            <th>Mots cles</th>
+            <th>Valide</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pfe of pfes | async | filter:searchText">
+            <td>{{ pfe.sujet }}</td>
+            <td>{{ pfe.rapport }}</td>
+            <td>{{ pfe.entreprise }}</td>
+            <td>{{ pfe.mission }}</td>
+            <td>{{ pfe.motsCles }}</td>
+            <td>{{ pfe.valid }}</td>
+            <td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
