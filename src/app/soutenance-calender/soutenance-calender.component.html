@@ -1,5 +1,7 @@
-<div class="container-fluid block full" id="page-content">
+
   <ng-container *ngIf="mode==modeEnum[1]">
+
+    <h4 [routerLink]="['../../Month/'+monthNumber+year]" style="cursor: pointer"> < Retour au moi {{month}}</h4>
 
     <h2>Soutenances pour le jour: {{date}}</h2>
 
@@ -61,7 +63,8 @@
       <tbody class="fc-body">
         <tr class="soutenance-line fc-row" *ngFor="let week of getNumberOfWeeks()">
           <ng-container  *ngFor="let date of getDatesAtWeek(week)">
-            <td class="fc-day-top fc-day" *ngIf="isInMonth(date); else elseBlock" routerLink="/Day/{{getDateFormatted(date)}}">
+            <td class="fc-day-top fc-day" *ngIf="isInMonth(date); else elseBlock"
+                [routerLink]="['../../Day/'+getDateFormatted(date)]">
               <span class="fc-day-number">{{date}}</span> <br>
               <span [innerHTML]="getNumberOfSoutenancesAtDay(date)"></span>
             </td>
@@ -75,5 +78,3 @@
       </tbody>
     </table>
   </ng-container>
-
-</div>

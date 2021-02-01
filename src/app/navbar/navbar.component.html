@@ -1,0 +1,103 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <ul class="nav navbar-nav-custom">
+    <li class="hidden-xs animation-fadeInQuick">
+      <a><strong>PFEs INSAT</strong></a>
+    </li>
+    <li>
+
+      <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+        <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
+        <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
+      </a>
+    </li>
+
+  </ul>
+
+  <ul class="nav navbar-nav-custom pull-right">
+    <li>
+      <form class="navbar-form-custom" method="get">
+        <input type="text" id="navSearch" name="topSearch" class="form-control" placeholder="Chercher Sujets Pfe...">
+      </form>
+    </li>
+    <li>
+      <a>
+        <i class="gi gi-settings">
+        </i>
+      </a>
+    </li>
+
+    <li class="dropdown">
+
+      <a class="dropdown-toggle" data-toggle="dropdown">
+        <i class="gi gi-woman"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header">
+          <strong>Nom Prenom</strong>
+        </li>
+
+        <li>
+          <a href="#">
+            <i class="fa fa-inbox fa-fw pull-right"></i>
+            Notifications
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <i class="fa fa-pencil-square fa-fw pull-right"></i>
+            Profil
+          </a>
+        </li>
+
+        <li class="divider">
+        </li>
+
+        <li>
+          <a href="#">
+            <i class="fa fa-gears fa-fw pull-right"></i>
+            Paramètres
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <i class="fa fa-power-off fa-fw pull-right"></i>
+            Se Déconnecter
+          </a>
+        </li>
+
+
+      </ul>
+
+    </li>
+
+  </ul>
+
+</header>
+
+<div id="sidebar">
+  <div id="sidebar-brand" class="themed-background">
+    <a class="sidebar-title">
+      <i class="fa">
+      </i>
+      <span class="sidebar-nav-mini-hide">
+        PFE <strong>INSAT</strong>
+      </span>
+    </a>
+  </div>
+  <div id="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 322px">
+    <div id="sidebar-scroll" style="overflow: hidden; width: auto; height: 322px">
+      <div class="sidebar-content">
+        <ul class="sidebar-nav">
+          <li>
+            <a href="" class=""><i class="gi gi-inbox sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Catalogue PFEs</span></a>
+          </li>
+          <li>
+            <a [routerLink]="['/soutenances']" class=""><i class="gi gi-calendar sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Calendrier PFEs</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,81 @@
-<p>view-profile works!</p>
+<ng-container *ngIf="professor!= null">
+  <div class="content-header content-header-media-custom content-header-media">
+    <div class="header-section">
+      <div class="row">
+        <div class="col-sm-7 col-md-8 col-lg-9 content-float-hor push-bit-top-bottom clearfix">
+          <img [src]="professor?.profilePicUrl" alt="photo de profile" class="img-circle img-thumbnail img-thumbnail-avatar pull-left">
+          <h1>
+            {{professor.firstName}} {{professor.familyName}}
+          </h1>
+          <h2>
+            {{professor.speciality}}
+          </h2>
+        </div>
+
+        <div class="col-sm-5 col-md-4 col-lg-3">
+          <div class="col-xs-6 col-sm-12">
+            <a href="mailto:{{professor.email}}" class="btn btn-block btn-default">
+
+              <strong><i class="gi gi-envelope"></i> Envoyer un e-mail</strong>
+            </a>
+          </div>
+          <div class="col-xs-6 col-sm-12">
+            <a href="https://www.linkedin.com/in/{{professor.linkedInLink}}" target="_blank" rel='noreferrer noopener'
+               class="btn btn-block btn-default" *ngIf="professor.linkedInLink!=''">
+
+              <strong><i class="fa fa-linkedin-square"></i> LinkedIn</strong>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <diV class="image-container">
+      <img src="../../assets/INSAT-1.png" alt="INSAT" class="animation-pulseSlow">
+    </diV>
+  </div>
+  <div class="col-lg-6">
+    <div class="widget animation-fadeInQuick" *ngIf="professor.etudiantsEncadre.length>0">
+      <div class="widget-content widget-content-mini themed-background-dark text-light-op">
+        <h4 class="text-light"> etudiants encadrés</h4>
+      </div>
+      <div class="widget-content widget-content-full">
+        <div class="table table-borderless table-striped table-vcenter">
+            <div *ngFor="let etudiant of professor.etudiantsEncadre" class="student-row">
+              <div class="inline">
+                <h3 class="fa fa-male"></h3>
+              </div>
+              <div class="inline">
+                <h3>
+                {{etudiant.firstName}} {{etudiant.familyName}}
+                </h3>
+              </div>
+              <div class="inline pull-right">
+                <h5>{{etudiant.speciality}}</h5>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="widget animation-fadeInQuick">
+      <div class="widget-content widget-content-mini themed-background-dark text-light-op">
+
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div class="block full" *ngIf="noSuchPerson">
+  <div class="alert alert-danger">
+    <h3>
+      Cette Personne n'existe pas!
+    </h3>
+
+    <a [routerLink]="['/']" class="alert-link">
+      < Retour
+    </a>
+
+  </div>
+</div>

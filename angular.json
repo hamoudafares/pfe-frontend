@@ -30,7 +30,13 @@
               "src/css/plugins.css",
               "src/css/themes.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/js/vendor/jquery-2.2.4.min.js",
+              "src/js/vendor/bootstrap.min.js",
+              "src/js/vendor/modernizr-3.3.1.min.js",
+              "src/js/plugins.js",
+              "src/js/app.js"
+            ]
           },
           "configurations": {
             "production": {

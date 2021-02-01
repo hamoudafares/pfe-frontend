@@ -27,6 +27,12 @@ export class SoutenanceCalenderComponent implements OnInit {
 
   date: String = '';
 
+  month: String = '';
+
+  monthNumber: string;
+
+  year: string;
+
   datesArray: string[]; // used to store all dates in the month (and the few days before/after) for ease of iteration
 
   heightValues: number[][]; // used for height of divs
@@ -36,27 +42,65 @@ export class SoutenanceCalenderComponent implements OnInit {
   constructor(private soutenanceService: SoutenanceService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    let reRoute = false;
+
+    // checks if in Month display or Day display
+    // if neither, redirects to september of the current year
+
     let route = this.router.url.split("/");
+    if(route[2] == undefined) route[2] = '';
+
     if(route[2].toLowerCase() == 'day') {
       this.mode = this.modeEnum[1];
       this.activatedRoute.params.subscribe(params => {
         let dayDate:string = params["daydate"];
-        this.getSoutenancesAtDay(dayDate);
+        reRoute = this.getSoutenancesAtDay(dayDate);
       });
     }
+
     else if(route[2].toLowerCase() == 'month') {
       this.mode = this.modeEnum[0];
       this.activatedRoute.params.subscribe(params => {
         let monthDate:string = params["month"];
-        this.getSoutenancesAtMonth(monthDate);
+
+        reRoute = this.getSoutenancesAtMonth(monthDate);
+
       });
+    }
+    else reRoute = true;
+    if (reRoute) {
+      let currentYear = new Date().getFullYear();
+
+      let date = '0109'+currentYear;
+
+      this.router.navigate(['soutenances/Month/'+date]);
+
     }
   }
 
-  getSoutenancesAtDay(dayDate: String): void{
+  getSoutenancesAtDay(dayDate: String): boolean{
+
+    if(dayDate == undefined) dayDate = '';
+
     let day = dayDate.substr(0,2);
     let month = dayDate.substr(2,2);
     let year = dayDate.substr(4,4);
+
+    this.month = SoutenanceService.months[parseInt(month)];
+
+    this.monthNumber = month;
+    this.year = year;
+
+    let verifyDate = new Date(parseInt(year),parseInt(month)-1, parseInt(day));
+
+    if(verifyDate instanceof Date && !isNaN(verifyDate.valueOf())){
+      // used to verify that a date is correct and valid
+    }
+
+    else {
+      // we return true to redirect
+      return true;
+    }
 
     this.date = day + "/" + month + "/" + year;
 
@@ -116,15 +160,33 @@ export class SoutenanceCalenderComponent implements OnInit {
 
     }
 
-    console.dir(this.soutenancesAtDay);
+    return false;
 
 
   }
 
-  getSoutenancesAtMonth(monthDate: string){
+  getSoutenancesAtMonth(monthDate: string): boolean{
+
+    if(monthDate == undefined)monthDate = '';
+
     let month = monthDate.substr(0, 2);
     let year = monthDate.substr(2,4);
     this.date = SoutenanceService.months[parseInt(month)]+'/'+month + "/" + year;
+
+
+
+    let verifyDate = new Date(parseInt(year),parseInt(month)-1);
+
+
+
+    if(verifyDate instanceof Date && !isNaN(verifyDate.valueOf())){
+      // used to verify that a date is correct and valid
+    }
+
+    else {
+      // we return true to redirect
+      return true;
+    }
 
     let soutenances = this.soutenanceService.getSoutenancesAtMonth(month, year);
 
@@ -156,9 +218,6 @@ export class SoutenanceCalenderComponent implements OnInit {
 
     while (date.getMonth() == (parseInt(month)-1)){
 
-
-      console.log("added " + date.toLocaleDateString());
-
       this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
       date.setDate(date.getDate() + 1);
       lastDate = new Date(date.getTime());
@@ -182,11 +241,8 @@ export class SoutenanceCalenderComponent implements OnInit {
       dayIndex++;
     }
 
+    return false;
 
-
-    console.log(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
-    console.log(this.datesArray);
-    console.log(this.datesArray.length);
   }
 
   getCalenderBlockDisplacement(soutenance: Soutenance): number{
