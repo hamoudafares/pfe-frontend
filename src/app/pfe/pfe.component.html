@@ -1,31 +1,33 @@
-<div class="panel panel-primary">
-    <div class="panel-heading" style="width: 100%">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchText">
+<div class="panel col-lg-12">
+    <div class=" header-section " style="width: 100%">
+        <div class="form-group input-group">
+            <input type="text" class="form-control" placeholder="Chercher..." [(ngModel)]="searchText">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
           </div>
-      <h2>Liste des pfes</h2>
     </div>
-    <div class="panel-body">
-        
-      <table class="table table-striped">
+    <div class="block-title">
+      <h2>Liste des PFEs</h2>
+    </div>
+    <div class="panel-body table-responsive">
+      <table class="table table-borderless table-vcenter table-striped">
         <thead>
           <tr>
             <th>Sujet</th>
-            <th>rapport</th>
             <th>entreprise</th>
             <th>Mission</th>
             <th>Mots cles</th>
+            <th>rapport</th>
             <th>Valide</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let pfe of pfes | async | filter:searchText">
-            <td>{{ pfe.sujet }}</td>
-            <td>{{ pfe.rapport }}</td>
+          <tr *ngFor="let pfe of pfes | filter:searchText">
+            <td>{{ pfe.sujet}}</td>
             <td>{{ pfe.entreprise }}</td>
             <td>{{ pfe.mission }}</td>
             <td>{{ pfe.motsCles }}</td>
-            <td>{{ pfe.valid }}</td>
+            <td><a style="padding-left: 25px;" href="{{pfe.rapport}}"  target="_blank"><i class="fa fa-file-pdf-o"></i></a></td>
+            <td><i [ngClass]="{'fa-check':pfe.valid==true,'fa-times':pfe.valid==false}" class="fa fa-lg" style="overflow: hidden; position: relative; margin-left: 20px;"></i></td>
             <td>
             </td>
           </tr>

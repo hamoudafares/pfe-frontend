@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Pfe } from '../models/pfe';
 import { PfeService } from '../services/pfe.service';
 
@@ -10,15 +9,16 @@ import { PfeService } from '../services/pfe.service';
   styleUrls: ['./pfe.component.css']
 })
 export class PfeComponent implements OnInit {
-  pfes: Observable<Pfe[]>;
-
-  constructor(private pfeService: PfeService, private router: Router) { }
+  pfes: Pfe[]=[];
   searchText: any;
-  ngOnInit(): void {
-    this.reloadData();
-  }
-  reloadData() {
-    this.pfes = this.pfeService.getAll();
-  }
+  len:any;
 
+  constructor(private pfeService: PfeService) { }
+ 
+  ngOnInit(): void {
+        this.pfeService.getAll().pipe(first()).subscribe(pfes => {
+          this.pfes = pfes;
+          this.len=pfes.length;
+    });
+   }
 }

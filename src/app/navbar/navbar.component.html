@@ -1,7 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <ul class="nav navbar-nav-custom">
     <li class="hidden-xs animation-fadeInQuick">
-      <a><strong>PFEs INSAT</strong></a>
+      <a routerLink="/home"><strong>PFEs INSAT</strong></a>
     </li>
     <li>
 
@@ -19,14 +19,14 @@
         <input type="text" id="navSearch" name="topSearch" class="form-control" placeholder="Chercher Sujets Pfe...">
       </form>
     </li>
-    <li>
-      <a>
+    <li *ngIf="currentUser">
+      <a routerLink="/settings">
         <i class="gi gi-settings">
         </i>
       </a>
     </li>
 
-    <li class="dropdown">
+    <li class="dropdown" *ngIf="currentUser">
 
       <a class="dropdown-toggle" data-toggle="dropdown">
         <i class="gi gi-woman"></i>
@@ -44,24 +44,32 @@
         </li>
 
         <li>
-          <a href="#">
+          <a routerLink="/profile/professor/:id">
             <i class="fa fa-pencil-square fa-fw pull-right"></i>
             Profil
           </a>
         </li>
 
+        <li *ngIf="isAdmin">
+          <a routerLink="/admin">
+            <i class="fa fa-user pull-right"></i>
+            Admin 
+          </a>
+        </li>
+        
+
         <li class="divider">
         </li>
 
         <li>
-          <a href="#">
+          <a routerLink="/settings">
             <i class="fa fa-gears fa-fw pull-right"></i>
             Paramètres
           </a>
         </li>
 
         <li>
-          <a href="#">
+          <a (click)="logout()">
             <i class="fa fa-power-off fa-fw pull-right"></i>
             Se Déconnecter
           </a>
@@ -91,11 +99,14 @@
       <div class="sidebar-content">
         <ul class="sidebar-nav">
           <li>
-            <a href="" class=""><i class="gi gi-inbox sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Catalogue PFEs</span></a>
+            <a routerLink="/pfe" class=""><i class="gi gi-inbox sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Catalogue PFEs</span></a>
           </li>
           <li>
             <a [routerLink]="['/soutenances']" class=""><i class="gi gi-calendar sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Calendrier PFEs</span></a>
           </li>
+          <!-- <li>
+            <a  class="" style="padding-right: 10px;"><i class="fa fa-list-ul"></i><span style="margin-left: 10px;" class="sidebar-nav-mini-hide"> Liste des PFEs</span></a>
+          </li> -->
         </ul>
       </div>
     </div>

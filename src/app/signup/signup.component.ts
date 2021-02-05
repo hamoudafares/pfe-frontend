@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
 
         const formOptions: AbstractControlOptions = { validators: MustMatch('password', 'confirmPassword') };
         this.form = this.formBuilder.group({
-            CIN: [''],
+            cin: ['',Validators.required],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
             confirmPassword: ['', Validators.required]
         }, formOptions);
 
-            this.userService.getById(parseInt(this.id))
+            this.userService.getById(this.id)
                 .pipe(first())
                 .subscribe((x: { [key: string]: any; }) => this.form.patchValue(x));
         
@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit {
         .pipe(first())
         .subscribe(() => {
             this.alertService.success('User added', { keepAfterRouteChange: true });
-            this.router.navigate(['/login'], { relativeTo: this.route });
+            this.router.navigate(['/admin']);
         })
         .add(() => this.loading = false);
 }

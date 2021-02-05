@@ -8,3 +8,5 @@ html, body {
 .full{
   height: 100%;
 }
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";

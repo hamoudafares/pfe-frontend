@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Pfe } from '../models/pfe';
 
 
-const baseUrl = `${environment.apiUrl}`;
+const baseUrl = `${environment.apiUrl}/pfes`;
 
 @Injectable({
   providedIn: 'root'
