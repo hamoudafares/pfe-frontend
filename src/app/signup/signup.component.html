@@ -79,7 +79,8 @@
             <label>Role</label>
             <select formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
                 <option value=""></option>
-                <option value="User">Utilisateur</option>
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
                 <option value="Admin">Administrateur</option>
             </select>
             <div *ngIf="submitted && f.role.errors" class="invalid-feedback">

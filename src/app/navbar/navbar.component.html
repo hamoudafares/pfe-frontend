@@ -20,7 +20,7 @@
       </form>
     </li>
     <li *ngIf="currentUser">
-      <a routerLink="/settings">
+      <a routerLink="/settings/{{currentUser.id}}">
         <i class="gi gi-settings">
         </i>
       </a>
@@ -62,7 +62,7 @@
         </li>
 
         <li>
-          <a routerLink="/settings">
+          <a routerLink="/settings/{{currentUser.id}}">
             <i class="fa fa-gears fa-fw pull-right"></i>
             Paramètres
           </a>

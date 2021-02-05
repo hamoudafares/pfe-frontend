@@ -1,42 +1,26 @@
 <h1>Paramètres</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <!-- <div class="form-row">
-        <div class="form-group col">
-        <h3 class="pt-3">Changer le mot de passe</h3>
+    <div class="form-group col">
+        <h3>Change profile picture</h3>
+        <img class="rounded-circle test" [src]="urllink">
+        <br>
+        <input type="file" class="btn btn-sm btn-primary" (change)="selectFile($event)">
     </div>
-    <div class="form-row">
-        <div class="form-group col">
-            <label>Password</label>
-            <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                <div *ngIf="f.password.errors.required">Password is required</div>
-                <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
-            </div>
-        </div>
-        <div class="form-group col">
-            <label>Confirm Password</label>
-            <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
-            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
-                <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
-                <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
-            </div>
-        </div>
-    </div> -->
-    <div class="form-group col-5">
+    <div class="form-group col-5" *ngIf="isAdmin">
         <label>First Name</label>
         <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
         <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
             <div *ngIf="f.firstName.errors.required">First Name is required</div>
         </div>
     </div>
-    <div class="form-group col-5">
+    <div class="form-group col-5" *ngIf="isAdmin">
         <label>Last Name</label>
         <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
         <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
             <div *ngIf="f.lastName.errors.required">Last Name is required</div>
         </div>
     </div>
-<div class="form-row">
+<div *ngIf="isAdmin" class="form-row">
     <div class="form-group col-7">
         <label>Email</label>
         <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
@@ -49,7 +33,8 @@
         <label>Role</label>
         <select formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
             <option value=""></option>
-            <option value="User">User</option>
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
             <option value="Admin">Admin</option>
         </select>
         <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
@@ -84,11 +69,11 @@
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
         </button>
-        <a routerLink="/login" class="btn btn-link">Cancel</a>
+        <a (click)="navigation()" class="btn btn-link">Cancel</a>
     </div>
     
 </form>
-<form >
+<!-- <form >
     <div class="form-group col">
         <h3>Change profile picture</h3>
         <img class="rounded-circle test" [src]="urllink">
@@ -100,9 +85,9 @@
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
         </button>
-        <a routerLink="/login" class="btn btn-link">Cancel</a>
+        <a routerLink=".." class="btn btn-link">Cancel</a>
     </div>
-</form>
+</form> -->
 
 
 <!-- <div class="card-container" style="background-color: darkcyan;">

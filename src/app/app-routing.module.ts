@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: "signup", component: SignupComponent},
   {path: "reset-password", component:ResetPasswordComponent},
   {path: "",component:HomeComponent},
-  {path: "settings", component: SettingsComponent},
+  {path: "settings/:id", component: SettingsComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
   {path: "index",component:IndexComponent},
   {path: "pfe",component:PfeComponent},

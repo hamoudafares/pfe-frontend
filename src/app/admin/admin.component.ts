@@ -11,7 +11,7 @@ export class AdminComponent implements OnInit {
     users: User[]=[];
     currentUser:User;
     searchText;
-    // isDeleting:boolean;
+    isDeleting:boolean;
 
     constructor(private userService: UserService, private authenticationService:AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;
@@ -20,7 +20,6 @@ export class AdminComponent implements OnInit {
     ngOnInit() {
         this.loading = true;
         console.log('what again?');
-        
         this.userService.getAll().pipe(first()).subscribe(users => {
             this.loading = false;
             console.log("im in");
@@ -28,14 +27,24 @@ export class AdminComponent implements OnInit {
             this.users = users;
         });
     }
-
-    // deleteAccount(id: string) {
-    //     const user = this.users.find(x => x.id == id);
-    //     user.isDeleting = true;
+    // deleteUser(id: string) {
+    //     const user = this.users.find(x => x.id.toString() === id);
+    //     if (!user) return;
     //     this.userService.delete(id)
     //         .pipe(first())
-    //         .subscribe(() => {
-    //             this.users = this.users.filter(x => x.id != id) 
-    //         });
+    //         .subscribe(() => this.users = this.users.filter(x => x.id.toString() !== id));
     // }
+
+    deleteUser(id: string) {
+        console.log("id inside delete user",id);
+        const user = this.users.find(x => x.id.toString() == id);
+        if (!user) return;
+        this.userService.delete(id).subscribe(
+          () => {
+            this.users = this.users.filter(x => x.id.toString() != id);
+            console.log("this users value",this.users,"and id value", id, "and x.id", this.users[0].id);
+          }
+        );
+      }
+
 }

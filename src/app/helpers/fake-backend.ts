@@ -6,7 +6,6 @@ import { User } from '../models/user';
 import { Role } from '../models/role';
 import { Pfe } from '../models/pfe';
 const usersKey = 'angular-11-crud-example-users';
-const usersJSON = localStorage.getItem(usersKey);
 let users: User[] = [{
     id: 1,
     username: 'ons1',
@@ -134,7 +133,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // });
         }
 
-
         function getUsers() {
             return ok(users.map(x => basicDetails(x)));
         }
@@ -142,6 +140,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function getPfes() {
             return ok(pfes.map(x => basicDetailsPfe(x)));
         }
+
         function getUserById() {
             const user = users.find(x => x.id === idFromUrl());
             return ok(basicDetails(user));
@@ -181,66 +180,31 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function updateUser() {
-            // let params = body;
-            // let user = users.find(x => x.id === idFromUrl());
-
-            // if (params.email !== user.email && users.find(x => x.email === params.email)) {
-            //     return error(`User with the email ${params.email} already exists`);
-            // }
-
-            // // only update password if entered
-            // if (!params.password) {
-            //     delete params.password;
-            // }
-
-            // // update and save user
-            // Object.assign(user, params);
-            // localStorage.setItem(usersKey, JSON.stringify(users));
-
-            // return ok();
-
-            if (!isAuthenticated()) return unauthorized();
-
             let params = body;
             let user = users.find(x => x.id === idFromUrl());
 
-            // user users can update own profile and admin users can update all profiles
-            if (user.id !== currentUser().id && !isAuthorized(Role.Admin)) {
-                return unauthorized();
+            if (params.email !== user.email && users.find(x => x.email === params.email)) {
+                return error(`User with the email ${params.email} already exists`);
             }
 
-            // only update password if included
+            // only update password if entered
             if (!params.password) {
                 delete params.password;
             }
-            // don't save confirm password
-            delete params.confirmPassword;
 
             // update and save user
             Object.assign(user, params);
             localStorage.setItem(usersKey, JSON.stringify(users));
 
-            return ok(basicDetails(user));
+            return ok();
         }
 
         function deleteUser() {
-            // users = users.filter(x => x.id !== idFromUrl());
-            // localStorage.setItem(usersKey, JSON.stringify(users));
-            // return ok();
-            if (!isAuthenticated()) return unauthorized();
-
-            let user = users.find(x => x.id === idFromUrl());
-
-            // user users can delete own user and admin users can delete any user
-            if (user.id !== currentUser().id && !isAuthorized(Role.Admin)) {
-                return unauthorized();
-            }
-
-            // delete user then save
             users = users.filter(x => x.id !== idFromUrl());
             localStorage.setItem(usersKey, JSON.stringify(users));
             return ok();
         }
+
 
         // helper functions
 
@@ -251,12 +215,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function error(message: any) {
             return throwError({ error: { message } })
-                .pipe(materialize(), delay(500), dematerialize()); // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648);
+                .pipe(materialize(), delay(50), dematerialize()); // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648);
         }
 
         function unauthorized() {
             return throwError({ status: 401, error: { message: 'Unauthorized' } })
-                .pipe(materialize(), delay(500), dematerialize());
+                .pipe(materialize(), delay(50), dematerialize());
         }
 
         function basicDetails(user: any) {
@@ -287,36 +251,42 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function newUserId() {
             return users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
         }
+
         function isLoggedIn() {
             const authHeader = headers.get('Authorization') || '';
             return authHeader.startsWith('Bearer fake-jwt-token');
         }
+
         function isAdmin() {
             return isLoggedIn() && currentUser().role === Role.Admin;
         }
+
         function isStudent() {
             return isLoggedIn() && currentUser().role === Role.Student;
         }
+
         function isTeacher() {
             return isLoggedIn() && currentUser().role === Role.Teacher;
         }
+
         function currentUser() {
-            // if (!isLoggedIn()) return;
-            // const id = parseInt(headers.get('Authorization').split('.')[1]);
-            // return users.find(x => x.id === id);
-             // check if jwt token is in auth header
-             const authHeader = headers.get('Authorization');
-             if (!authHeader.startsWith('Bearer fake-jwt-token')) return;
+            if (!isLoggedIn()) return;
+            const id = parseInt(headers.get('Authorization').split('.')[1]);
+            return users.find(x => x.id === id);
+            //  check if jwt token is in auth header
+            //  const authHeader = headers.get('Authorization');
+            //  if (!authHeader.startsWith('Bearer fake-jwt-token')) return;
  
-             // check if token is expired
-             const jwtToken = JSON.parse(atob(authHeader.split('.')[1]));
-             const tokenExpired = Date.now() > (jwtToken.exp * 1000);
-             if (tokenExpired) return;
+            //  // check if token is expired
+            //  const jwtToken = JSON.parse(atob(authHeader.split('.')[1]));
+            //  const tokenExpired = Date.now() > (jwtToken.exp * 1000);
+            //  if (tokenExpired) return;
  
-             const user = users.find(x => x.id === jwtToken.id);
-             return user;
+            //  const user = users.find(x => x.id === jwtToken.id);
+            //  return user;
         
         }
+
         function generateRefreshToken() {
             const token = new Date().getTime().toString();
 

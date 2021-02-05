@@ -41,8 +41,8 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
                 <td >
-                    <a routerLink="/settings" data-toggle="tooltip" title="" class="btn btn-effect-ripple btn-sm btn-success" style="overflow: hidden; position: relative; margin-right: 5px;" data-original-title="Edit User"><i class="fa fa-pencil"></i></a>
-                    <a data-toggle="tooltip" title="" class="btn btn-effect-ripple btn-sm btn-danger" style="overflow: hidden; position: relative;" data-original-title="Delete User"><i class="fa fa-times"></i></a>
+                    <a routerLink="/settings/{{user.id}}" data-toggle="tooltip" title="" class="btn btn-effect-ripple btn-sm btn-success" style="overflow: hidden; position: relative; margin-right: 5px;" data-original-title="Edit User"><i class="fa fa-pencil"></i></a>
+                    <a data-toggle="tooltip" title="" class="btn btn-effect-ripple btn-sm btn-danger" style="overflow: hidden; position: relative;" (click)="deleteUser(user.id)" data-original-title="Delete User"><i class="fa fa-times"></i></a>
                     </td>
                 <td>
                 </td>

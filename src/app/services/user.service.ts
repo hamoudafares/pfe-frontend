@@ -124,17 +124,7 @@ export class UserService {
   }
 
     update(id: string, params: any) {
-        // return this.http.put(`${baseUrl}/${id}`, params);
-        return this.http.put(`${baseUrl}/${id}`, params)
-            .pipe(map((user: any) => {
-                // update the current user if it was updated
-                if (user.id === this.userValue.id) {
-                    // publish updated user to subscribers
-                    user = { ...this.userValue, ...user };
-                    this.userSubject.next(user);
-                }
-                return user;
-            }));
+        return this.http.put(`${baseUrl}/${id}`, params);
     }
 
     delete(id: string) {
