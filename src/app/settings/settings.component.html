@@ -4,7 +4,15 @@
         <h3>Change profile picture</h3>
         <img class="rounded-circle test" [src]="urllink">
         <br>
-        <input type="file" class="btn btn-sm btn-primary" (change)="selectFile($event)">
+        <label for="file-upload" class="btn btn-link"><i class="fa fa-upload"></i> &nbsp;Upload photo<input id="file-upload" type="file" class="btn btn-sm btn-primary" (change)="selectFile($event)"></label>
+        
+    </div>
+    <div class="form-group col-5" *ngIf="isAdmin">
+        <label>CIN</label>
+        <input type="text" formControlName="cin" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cin.errors }" />
+        <div *ngIf="submitted && f.cin.errors" class="invalid-feedback">
+            <div *ngIf="f.cin.errors.required">CIN is required</div>
+        </div>
     </div>
     <div class="form-group col-5" *ngIf="isAdmin">
         <label>First Name</label>

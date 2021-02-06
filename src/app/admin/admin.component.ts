@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { User } from '../models/user';
 import { AuthenticationService } from '../services/authentication.service';
@@ -12,8 +13,9 @@ export class AdminComponent implements OnInit {
     currentUser:User;
     searchText;
     isDeleting:boolean;
+    currentUserDeleted:boolean;
 
-    constructor(private userService: UserService, private authenticationService:AuthenticationService) {
+    constructor(private userService: UserService, private authenticationService:AuthenticationService, private router: Router) {
         this.currentUser = this.authenticationService.currentUserValue;
      }
 
@@ -27,24 +29,27 @@ export class AdminComponent implements OnInit {
             this.users = users;
         });
     }
-    // deleteUser(id: string) {
-    //     const user = this.users.find(x => x.id.toString() === id);
-    //     if (!user) return;
-    //     this.userService.delete(id)
-    //         .pipe(first())
-    //         .subscribe(() => this.users = this.users.filter(x => x.id.toString() !== id));
-    // }
 
     deleteUser(id: string) {
         console.log("id inside delete user",id);
+        if(this.currentUser.id.toString()==id){
+            this.currentUserDeleted=true;
+        }
         const user = this.users.find(x => x.id.toString() == id);
         if (!user) return;
         this.userService.delete(id).subscribe(
           () => {
             this.users = this.users.filter(x => x.id.toString() != id);
-            console.log("this users value",this.users,"and id value", id, "and x.id", this.users[0].id);
           }
         );
+        if(this.currentUserDeleted){
+            this.logout();
+        }
+        
+      }
+      logout() {
+        this.router.navigate(["/login"]);
+        this.authenticationService.logout();  
       }
 
 }

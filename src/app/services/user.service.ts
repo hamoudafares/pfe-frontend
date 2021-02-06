@@ -96,10 +96,9 @@ export class UserService {
     }
 
     logout() {
-        this.http.post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true }).subscribe();
-        this.stopRefreshTokenTimer();
+        localStorage.removeItem('user');
         this.userSubject.next(null);
-        this.router.navigate(['/user/login']);
+        this.router.navigate(['/login']);
     }
 
     refreshToken() {
@@ -132,7 +131,7 @@ export class UserService {
         return this.http.delete(`${baseUrl}/${id}`)
             .pipe(finalize(() => {
                 // auto logout if the logged in user was deleted
-                if (id === this.userValue.id.toString())
+                if (id == this.userValue.id.toString())
                     this.logout();
             }));
     }
@@ -140,13 +139,6 @@ export class UserService {
     validateResetToken(token: string) {
         return this.http.post(`${baseUrl}/validate-reset-token`, { token });
     }
-
-    // logout() {
-    //     this.http.post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true }).subscribe();
-    //     this.stopRefreshTokenTimer();
-    //     this.userSubject.next(null);
-    //     this.router.navigate(['/login']);
-    // }
 
     forgotPassword(email: string) {
         return this.http.post(`${baseUrl}`, { email });

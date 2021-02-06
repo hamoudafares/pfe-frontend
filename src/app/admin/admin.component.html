@@ -31,6 +31,7 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Action</th>
+                <th>pic</th>
               </tr>
             </thead>
             <tbody>
@@ -44,8 +45,7 @@
                     <a routerLink="/settings/{{user.id}}" data-toggle="tooltip" title="" class="btn btn-effect-ripple btn-sm btn-success" style="overflow: hidden; position: relative; margin-right: 5px;" data-original-title="Edit User"><i class="fa fa-pencil"></i></a>
                     <a data-toggle="tooltip" title="" class="btn btn-effect-ripple btn-sm btn-danger" style="overflow: hidden; position: relative;" (click)="deleteUser(user.id)" data-original-title="Delete User"><i class="fa fa-times"></i></a>
                     </td>
-                <td>
-                </td>
+                <td><img style="width: 30px;height: 30px;" src="assets/images/{{user.profilePic|defaultImage}}" alt=""></td>
               </tr>
             </tbody>
           </table>

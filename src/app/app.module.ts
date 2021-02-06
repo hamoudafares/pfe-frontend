@@ -29,6 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PfeComponent } from './pfe/pfe.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { DefaultImagePipe } from './pipes/default-image.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ResetPasswordComponent,
     HomeComponent,
     AdminComponent,
-    PfeComponent
+    PfeComponent,
+    DefaultImagePipe
   ],
   imports: [
     BrowserModule,

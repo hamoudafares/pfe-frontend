@@ -22,7 +22,7 @@ export class SettingsComponent implements OnInit {
   id: string;
   loading = false;
   submitted = false;
-  urllink:string="assets/images/default.png";
+  urllink:string;
   user = this.userService.userValue;
   currentUser: User;
   navigateTo:any;
@@ -49,8 +49,10 @@ export class SettingsComponent implements OnInit {
             role: ['{{this.user.role}}', Validators.required],
             cin:['{{this.user.cin}}',Validators.required],
             password: ['', [Validators.minLength(6),Validators.nullValidator]],
-            confirmPassword: ['', Validators.nullValidator]
+            confirmPassword: ['', Validators.nullValidator],
+            profilePic:['{{this.user.profilePic}}',Validators.nullValidator]
       }, formOptions);
+
       console.log("form",this.form);
       this.userService.getById(this.id)
                 .pipe(first())
