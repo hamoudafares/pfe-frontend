@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 import { Role } from '../models/role';
 import { User } from '../models/user';
 import { AuthenticationService } from '../services/authentication.service';
+import { LoginComponent } from '../login/login.component';
+import {MatDialog, MatDialogConfig } from '@angular/material/dialog';
+
+
 
 @Component({
   selector: 'app-navbar',
@@ -11,8 +15,9 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class NavbarComponent implements OnInit {
   currentUser: User;
+  closeResult = '';
   constructor(private router: Router,
-    private authenticationService: AuthenticationService) { 
+    private authenticationService: AuthenticationService,public matDialog: MatDialog) { 
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
 
@@ -25,8 +30,16 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.router.navigate(["/login"]);
+    this.router.navigate([".."]);
     this.authenticationService.logout();  
   }
+
+  openDialog() {
+    this.matDialog.open(LoginComponent,{
+      height: '400px',
+      width: '600px',
+    });
+  }
+
 
 }

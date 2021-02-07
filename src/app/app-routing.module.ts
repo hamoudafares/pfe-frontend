@@ -13,6 +13,8 @@ import {AuthGuard} from "./helpers/auth.guard";
 import {Role} from "./models/role";
 import {IndexComponent} from "./index/index.component";
 import {PfeComponent} from "./pfe/pfe.component";
+import { LocalInfoComponent } from './local-info/local-info.component';
+import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
   {path: "soutenances", component:SoutenanceCalenderComponent},
@@ -25,11 +27,14 @@ const routes: Routes = [
   {path: "login", component: LoginComponent},
   {path: "signup", component: SignupComponent},
   {path: "reset-password", component:ResetPasswordComponent},
-  {path: "",component:HomeComponent},
+  {path: "home",component:HomeComponent},
   {path: "settings/:id", component: SettingsComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
   {path: "index",component:IndexComponent},
   {path: "pfe",component:PfeComponent},
+  {path: "local",component:LocalInfoComponent},
+  {path: "footer",component:FooterComponent},
+  {path: "about",component:FooterComponent},
   {path: '**', redirectTo: '' },
 ];
 
