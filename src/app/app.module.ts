@@ -29,6 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PfeComponent } from './pfe/pfe.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { ExportAsPdfComponent } from './export-as-pdf/export-as-pdf.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ResetPasswordComponent,
     HomeComponent,
     AdminComponent,
-    PfeComponent
+    PfeComponent,
+    ExportAsPdfComponent
   ],
   imports: [
     BrowserModule,

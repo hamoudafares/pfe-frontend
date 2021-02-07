@@ -13,6 +13,7 @@ import {AuthGuard} from "./helpers/auth.guard";
 import {Role} from "./models/role";
 import {IndexComponent} from "./index/index.component";
 import {PfeComponent} from "./pfe/pfe.component";
+import {ViewSoutenanceComponent} from './view-soutenance/view-soutenance.component';
 
 const routes: Routes = [
   {path: "soutenances", component:SoutenanceCalenderComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: "soutenances/Week/:weekdate", component: SoutenanceCalenderComponent},
   {path: "soutenances/Day/:daydate", component: SoutenanceCalenderComponent},
   {path: "soutenances/:xd", component: SoutenanceCalenderComponent},
+  {path: "soutenances/one/:id", component: ViewSoutenanceComponent},
   {path: "admin/upload", component: AdminUploadStudentsComponent},
   {path: "profile/professor/:id", component: ViewProfileComponent},
   {path: "login", component: LoginComponent},

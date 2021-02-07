@@ -1,1 +1,281 @@
-<p>view-soutenance works!</p>
+<div id="main-container">
+  <!-- Header -->
+  <!-- In the PHP version you can set the following options from inc/config file -->
+  <!--
+      Available header.navbar classes:
+
+      'navbar-default'            for the default light header
+      'navbar-inverse'            for an alternative dark header
+
+      'navbar-fixed-top'          for a top fixed header (fixed main sidebar with scroll will be auto initialized, functionality can be found in js/app.js - handleSidebar())
+          'header-fixed-top'      has to be added on #page-container only if the class 'navbar-fixed-top' was added
+
+      'navbar-fixed-bottom'       for a bottom fixed header (fixed main sidebar with scroll will be auto initialized, functionality can be found in js/app.js - handleSidebar()))
+          'header-fixed-bottom'   has to be added on #page-container only if the class 'navbar-fixed-bottom' was added
+  -->
+  <header class="navbar navbar-inverse navbar-fixed-top">
+    <!-- Left Header Navigation -->
+    <ul class="nav navbar-nav-custom">
+      <!-- Main Sidebar Toggle Button -->
+      <li>
+        <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+          <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
+          <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
+        </a>
+      </li>
+      <!-- END Main Sidebar Toggle Button -->
+
+      <!-- Header Link -->
+      <li class="hidden-xs animation-fadeInQuick">
+        <a href=""><strong>FORMS</strong></a>
+      </li>
+      <!-- END Header Link -->
+    </ul>
+    <!-- END Left Header Navigation -->
+
+    <!-- Right Header Navigation -->
+    <ul class="nav navbar-nav-custom pull-right">
+      <!-- Search Form -->
+      <li>
+        <form action="page_ready_search_results.html" method="post" class="navbar-form-custom">
+          <input type="text" id="top-search" name="top-search" class="form-control" placeholder="Search..">
+        </form>
+      </li>
+      <!-- END Search Form -->
+
+      <!-- Alternative Sidebar Toggle Button -->
+      <li>
+        <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar-alt');this.blur();">
+          <i class="gi gi-settings"></i>
+        </a>
+      </li>
+      <!-- END Alternative Sidebar Toggle Button -->
+
+      <!-- User Dropdown -->
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+          <img src="img/placeholders/avatars/avatar9.jpg" alt="avatar">
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li class="dropdown-header">
+            <strong>ADMINISTRATOR</strong>
+          </li>
+          <li>
+            <a href="page_app_email.html">
+              <i class="fa fa-inbox fa-fw pull-right"></i>
+              Inbox
+            </a>
+          </li>
+          <li>
+            <a href="page_app_social.html">
+              <i class="fa fa-pencil-square fa-fw pull-right"></i>
+              Profile
+            </a>
+          </li>
+          <li>
+            <a href="page_app_media.html">
+              <i class="fa fa-picture-o fa-fw pull-right"></i>
+              Media Manager
+            </a>
+          </li>
+          <li class="divider"><li>
+          <li>
+            <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar-alt');">
+              <i class="gi gi-settings fa-fw pull-right"></i>
+              Settings
+            </a>
+          </li>
+          <li>
+            <a href="page_ready_lock_screen.html">
+              <i class="gi gi-lock fa-fw pull-right"></i>
+              Lock Account
+            </a>
+          </li>
+          <li>
+            <a href="page_ready_login.html">
+              <i class="fa fa-power-off fa-fw pull-right"></i>
+              Log out
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- END User Dropdown -->
+    </ul>
+    <!-- END Right Header Navigation -->
+  </header>
+  <!-- END Header -->
+
+  <!-- Page content -->
+  <div id="page-content">
+    <!-- Forms Components Header -->
+    <div class="content-header">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="header-section">
+            <h1>Presentation n°<span style="font-weight: lighter">{{presentation._id}}</span></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END Forms Components Header -->
+
+    <!-- Form Components Row -->
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Horizontal Form Block -->
+        <div class="block">
+          <!-- Horizontal Form Title -->
+          <div class="block-title">
+            <h2>Basic Info</h2>
+          </div>
+          <!-- END Horizontal Form Title -->
+
+          <!-- Horizontal Form Content -->
+          <form class="form-horizontal form-bordered" onsubmit="return false;">
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="example-hf-email">Room</label>
+              <div class="col-md-9">
+                <input readonly type="email" id="example-hf-email" name="example-hf-email" class="form-control" [value]="presentation.room">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="example-hf-email">Date</label>
+              <div class="col-md-9">
+                <input readonly type="email" name="example-hf-email" class="form-control" [value]="presentation.datetime">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="example-hf-email">Session</label>
+              <div class="col-md-9">
+                <input readonly type="email" name="example-hf-email" class="form-control" [value]="presentation.session.anneeUniversitaire">
+              </div>
+            </div>
+          </form>
+          <!-- END Horizontal Form Content -->
+        </div>
+        <!-- END Horizontal Form Block -->
+
+        <!-- Labels on top Form Block -->
+        <div class="block">
+          <!-- Labels on top Form Title -->
+          <div class="block-title">
+            <h2>Student</h2>
+          </div>
+          <!-- END Labels on top Form Title -->
+
+          <!-- Labels on top Form Content -->
+          <form class="form-bordered">
+            <div class="form-group">
+              <label for="example-nf-email">Name</label>
+              <input readonly type="email" id="example-nf-email" name="example-nf-email" class="form-control" value="{{presentation.student.user.familyName}} {{presentation.student.user.firstName}}">
+            </div>
+            <div class="form-group">
+              <label for="example-nf-email">Speciality</label>
+              <input readonly type="email" name="example-nf-email" class="form-control" value="{{presentation.student.speciality}}">
+            </div>
+            <div class="form-group">
+              <label for="example-nf-email">Option</label>
+              <input readonly type="email" name="example-nf-email" class="form-control" value="{{presentation.student.option}}">
+            </div>
+          </form>
+          <!-- END Labels on top Form Content -->
+        </div>
+        <!-- END Labels on top Form Block -->
+
+        <!-- Inline Form Block -->
+        <div class="block full">
+          <!-- Inline Form Title -->
+          <div class="block-title">
+            <h2>PFE</h2>
+          </div>
+          <!-- END Inline Form Title -->
+
+          <!-- Inline Form Content -->
+          <form class="form-bordered">
+            <div class="form-group">
+              <label for="example-nf-email">Sujet</label>
+              <input readonly type="email" name="example-nf-email" class="form-control" value="{{presentation.student.pfe.sujet}}">
+            </div>
+            <div class="form-group">
+              <label for="example-nf-email">Entreprise</label>
+              <input readonly type="email" name="example-nf-email" class="form-control" value="{{presentation.student.pfe.entreprise}}">
+            </div>
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-effect-ripple btn-primary">Download Rapport</button>
+            </div>
+
+          </form>
+          <!-- END Inline Form Content -->
+        </div>
+        <!-- END Inline Form Block -->
+
+      </div>
+      <div class="col-md-6">
+        <!-- Input States Block -->
+        <div class="block">
+          <!-- Input States Title -->
+          <div class="block-title">
+            <h2>Jurys</h2>
+          </div>
+          <!-- END Input States Title -->
+
+          <!-- Input States Content -->
+          <form class="form-horizontal form-bordered">
+            <div class="form-group" *ngFor="let jury of presentation.jury">
+              <label class="col-md-3 control-label" for="state-success">{{jury.user.familyName}} {{jury.user.firstName}}</label>
+              <div class="col-md-6">
+                <input readonly type="text" id="state-success" name="state-success" class="form-control" value="{{jury.speciality}}">
+              </div>
+            </div>
+          </form>
+          <!-- END Input States Content -->
+        </div>
+        <!-- END Input States Block -->
+
+        <!-- Input Sizes Block -->
+        <div class="block">
+          <!-- Input Sizes Title -->
+          <div class="block-title">
+            <h2>Presentation President</h2>
+          </div>
+          <!-- END Input Sizes Title -->
+
+          <!-- Input Sizes Content -->
+          <form class="form-horizontal form-bordered">
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="example-input-small">{{presentation.president.user.familyName}} {{presentation.president.user.firstName}}</label>
+              <div class="col-sm-6">
+                <input readonly type="text" id="example-input-small" name="example-input-small" class="form-control" value="{{presentation.president.speciality}}">
+              </div>
+            </div>
+          </form>
+          <!-- END Input Sizes Content -->
+        </div>
+        <!-- END Input Sizes Block -->
+        <div class="block">
+          <!-- Input Sizes Title -->
+          <div class="block-title">
+            <h2>Encadrant</h2>
+          </div>
+          <!-- END Input Sizes Title -->
+
+          <!-- Input Sizes Content -->
+          <form class="form-horizontal form-bordered">
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="example-input-small">{{presentation.student.supervisor.user.familyName}} {{presentation.student.supervisor.user.firstName}}</label>
+              <div class="col-sm-6">
+                <input readonly type="text" name="example-input-small" class="form-control" value="{{presentation.student.supervisor.speciality}}">
+              </div>
+            </div>
+          </form>
+          <!-- END Input Sizes Content -->
+        </div>
+        <div class="mt-5 form-group text-center">
+          <button type="submit" class="mt-5 btn btn-effect-ripple btn-info btn-lg" (click)="exportAsPDF('page-content')">Generate PDF</button>
+        </div>
+      </div>
+    </div>
+    <!-- END Form Components Row -->
+  </div>
+  <!-- END Page Content -->
+</div>
