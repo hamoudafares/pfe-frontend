@@ -16,10 +16,12 @@ export class HomeComponent {
         private userService: UserService,
         private authenticationService: AuthenticationService
     ) {
-        this.currentUser = this.authenticationService.currentUserValue;
+        this.currentUser = this.authenticationService.user;
+
     }
 
     ngOnInit() {
+      console.log(this.authenticationService.user);
         this.loading = true;
         this.userService.getById(this.currentUser.id).pipe(first()).subscribe((user: User) => {
             this.loading = false;

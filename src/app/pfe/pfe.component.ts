@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Pfe } from '../models/pfe';
+import { Role } from '../models/role';
+import { User } from '../models/user';
+import { AuthenticationService } from '../services/authentication.service';
 import { PfeService } from '../services/pfe.service';
 
 @Component({
@@ -10,15 +12,28 @@ import { PfeService } from '../services/pfe.service';
   styleUrls: ['./pfe.component.css']
 })
 export class PfeComponent implements OnInit {
-  pfes: Observable<Pfe[]>;
-
-  constructor(private pfeService: PfeService, private router: Router) { }
+  pfes: Pfe[]=[];
   searchText: any;
-  ngOnInit(): void {
-    this.reloadData();
-  }
-  reloadData() {
-    this.pfes = this.pfeService.getAll();
-  }
+  len:any;
+  currentUser: User;
 
+  constructor(private pfeService: PfeService, private authenticationService:AuthenticationService) {
+    this.currentUser = this.authenticationService.user;
+   }
+ 
+  ngOnInit(): void {
+        this.pfeService.getAll().pipe(first()).subscribe(pfes => {
+          this.pfes = pfes;
+          this.len=pfes.length;
+    });
+   }
+   get isAdmin() {
+    return this.currentUser && this.currentUser?.role === Role.Admin;
+  }
+  get isTeacher() {
+    return this.currentUser && this.currentUser?.role === Role.Professor;
+  }
+  get isStudent() {
+    return this.currentUser && this.currentUser?.role === Role.Student;
+  }
 }

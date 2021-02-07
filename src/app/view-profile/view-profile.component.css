@@ -9,23 +9,41 @@
 }
 
 .image-container > img{
-  width: 110%;
+  width: 100%;
   top: -150px;
   position: absolute;
 }
 
 .student-row{
-  transition: left 0.3s ease;
+  transition: all 0.3s ease;
+  transition-property: background-color, left;
+
   left: 0;
   position: relative;
+  cursor: pointer;
 }
 
 .student-row:hover{
   left: 10px;
+  background-color: #DDDDEE;
 }
 
 .inline{
   display: inline-block;
   margin-left: 10px;
   margin-right: 20px;
+}
+
+.table > tr.row{
+  height: 60px;
+  font-size: 20px;
+}
+
+.hover-lightup{
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.hover-lightup:hover{
+  background-color: #DDDDEE;
 }

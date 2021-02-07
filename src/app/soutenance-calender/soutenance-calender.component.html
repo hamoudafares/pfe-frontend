@@ -19,7 +19,7 @@
           style="left: {{(i)*198+100}}px">
           <div class="soutenance-block fc fc-unthemed" *ngFor="let soutenance of column; let j = index"
                style="top:{{topValues[i][j]}}px; height:{{heightValues[i][j]}}px;">
-            <b>{{soutenance.getEtudiant()}} </b> <br>
+            <b>{{soutenance.getEtudiantName()}} </b> <br>
                {{soutenance.getSujet()}}         <br>
 
             <ng-container *ngIf="heightValues[i][j]>75">

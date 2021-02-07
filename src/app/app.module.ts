@@ -21,7 +21,9 @@ import { LoginComponent } from './login/login.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
-import { fakeBackendProvider } from './helpers/fake-backend';
+import {DefaultImagePipe} from "./pipes/default-image.pipe";
+
+//import { fakeBackendProvider } from './helpers/fake-backend';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
@@ -29,6 +31,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PfeComponent } from './pfe/pfe.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {FooterComponent} from "./footer/footer.component";
+import {LocalInfoComponent} from "./local-info/local-info.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -51,7 +57,10 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ResetPasswordComponent,
     HomeComponent,
     AdminComponent,
-    PfeComponent
+    PfeComponent,
+    DefaultImagePipe,
+    FooterComponent,
+    LocalInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -60,13 +69,16 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }//,
 
     // provider used to create fake backend
-    fakeBackendProvider],
+  //  fakeBackendProvider],
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

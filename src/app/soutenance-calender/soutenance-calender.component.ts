@@ -21,6 +21,8 @@ export class SoutenanceCalenderComponent implements OnInit {
 
   soutenancesAtDay: Soutenance[][];
 
+  soutenanceList: Soutenance[];
+
   modeEnum:String[] = ["Month", "day"];
 
   mode: String;
@@ -71,7 +73,7 @@ export class SoutenanceCalenderComponent implements OnInit {
     if (reRoute) {
       let currentYear = new Date().getFullYear();
 
-      let date = '0109'+currentYear;
+      let date = '09'+currentYear;
 
       this.router.navigate(['soutenances/Month/'+date]);
 
@@ -94,7 +96,7 @@ export class SoutenanceCalenderComponent implements OnInit {
     let verifyDate = new Date(parseInt(year),parseInt(month)-1, parseInt(day));
 
     if(verifyDate instanceof Date && !isNaN(verifyDate.valueOf())){
-      // used to verify that a date is correct and valid
+      // used to verify that a datetime is correct and valid
     }
 
     else {
@@ -104,61 +106,64 @@ export class SoutenanceCalenderComponent implements OnInit {
 
     this.date = day + "/" + month + "/" + year;
 
-    let soutenances = this.soutenanceService.getSoutenancesAtDay(day, month, year);
+    this.soutenanceService.getSoutenancesAtDay(day, month, year).subscribe( (soutenanceData) =>{
+      this.soutenanceList = soutenanceData as Soutenance[];
+      this.soutenancesAtDay = [];
+      this.soutenancesAtDay[0] = [];
+      this.heightValues = [];
+      this.heightValues[0] = [];
+      this.topValues = [];
+      this.topValues[0] = [];
 
-    this.soutenancesAtDay = [];
-    this.soutenancesAtDay[0] = [];
-    this.heightValues = [];
-    this.heightValues[0] = [];
-    this.topValues = [];
-    this.topValues[0] = [];
+      let columns = 0;
 
-    let columns = 0;
-
-    for(let soutenance of soutenances){ // on insere les soutenances de maniere "parallele", c'est a dire si deux
-                                        // ne peuvent pas etre inséres simulatneement (8h->10h et 9h->11h), on les
-                                        // inseres dans deux colonnes paralleles pour mieux visualiser
-
-
-
-      for (let i = 0; i <= columns; i++) { //on essaye d'inserer chaque soutenances dans une colonne conveniente
+      for(let soutenance of this.soutenanceList){ // on insere les soutenances de maniere "parallele", c'est a dire si deux
+        // ne peuvent pas etre inséres simulatneement (8h->10h et 9h->11h), on les
+        // inseres dans deux colonnes paralleles pour mieux visualiser
 
 
-        let insertable = true;
-        for (let j = 0; j < this.soutenancesAtDay[i].length; j++) { // on verifie toutes les soutenances pour colonne i
 
-          let start1 = this.soutenancesAtDay[i][j].getHourAndMinuteAsFraction();
-          let start2 = soutenance.getHourAndMinuteAsFraction();
+        for (let i = 0; i <= columns; i++) { //on essaye d'inserer chaque soutenances dans une colonne conveniente
 
-          let duree1 = this.soutenancesAtDay[i][j].getDuration();
-          let duree2 = soutenance.getDuration();
 
-          let end1 = start1 + duree1;
-          let end2 = start2 + duree2;
+          let insertable = true;
+          for (let j = 0; j < this.soutenancesAtDay[i].length; j++) { // on verifie toutes les soutenances pour colonne i
 
-          insertable = (start1 >= end2) || (start2 >= end1); // on verifie le conflit temporaire
-          if(!insertable)break; // s'il ya un seul conflit, on quitte et essaye la colonne suivante
+            let start1 = this.soutenancesAtDay[i][j].getHourAndMinuteAsFraction();
+            let start2 = soutenance.getHourAndMinuteAsFraction();
 
-        }
-        if(insertable){
-          this.soutenancesAtDay[i].push(soutenance); // si la colonne est inserable dans i, on l'insere et on quitte
-          this.heightValues[i].push(this.getCalenderBlockSize(soutenance));
-          this.topValues[i].push(this.getCalenderBlockDisplacement(soutenance));
-          break;
-        }
-        else {
+            let duree1 = this.soutenancesAtDay[i][j].getDuration();
+            let duree2 = soutenance.getDuration();
 
-          if(i == columns){ //si on a essayer toutes les colonnes, on crée une nouvelle colonne
-            columns++;
-            this.soutenancesAtDay[columns] = [];
-            this.heightValues[columns] = [];
-            this.topValues[columns] = []
+            let end1 = start1 + duree1;
+            let end2 = start2 + duree2;
+
+            insertable = (start1 >= end2) || (start2 >= end1); // on verifie le conflit temporaire
+            if(!insertable)break; // s'il ya un seul conflit, on quitte et essaye la colonne suivante
+
           }
+          if(insertable){
+            this.soutenancesAtDay[i].push(soutenance); // si la colonne est inserable dans i, on l'insere et on quitte
+            this.heightValues[i].push(this.getCalenderBlockSize(soutenance));
+            this.topValues[i].push(this.getCalenderBlockDisplacement(soutenance));
+            break;
+          }
+          else {
+
+            if(i == columns){ //si on a essayer toutes les colonnes, on crée une nouvelle colonne
+              columns++;
+              this.soutenancesAtDay[columns] = [];
+              this.heightValues[columns] = [];
+              this.topValues[columns] = []
+            }
+          }
+
         }
 
       }
+    });
 
-    }
+
 
     return false;
 
@@ -180,7 +185,7 @@ export class SoutenanceCalenderComponent implements OnInit {
 
 
     if(verifyDate instanceof Date && !isNaN(verifyDate.valueOf())){
-      // used to verify that a date is correct and valid
+      // used to verify that a datetime is correct and valid
     }
 
     else {
@@ -188,58 +193,61 @@ export class SoutenanceCalenderComponent implements OnInit {
       return true;
     }
 
-    let soutenances = this.soutenanceService.getSoutenancesAtMonth(month, year);
+    this.soutenanceService.getSoutenancesAtMonth(month, year).subscribe( (soutenanceData) => {
+      this.soutenanceList = soutenanceData as Soutenance[];
+      const dateOptions = {  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
-    // formats date in a certain format
+      let date = new Date(parseInt(year),parseInt(month)-1);
+      console.log(date.toLocaleTimeString("fr-fr",dateOptions));
 
-    const dateOptions = {  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-
-    let date = new Date(parseInt(year),parseInt(month)-1);
-    console.log(date.toLocaleTimeString("fr-fr",dateOptions));
-
-    let firstDay = date.toLocaleTimeString("fr-fr",dateOptions).split(' ')[0]; // gets the first weekday in the month (e.g. lundi mardi)
-    // this next part sets the first visible day to monday always, so that the calender is always in the form monday - saturday
-    let dayIndex = SoutenanceService.daysOfTheWeek.indexOf(firstDay.toLowerCase())-1;
-    date.setDate(date.getDate() - dayIndex);
-    console.log(date.toLocaleTimeString('fr-fr',dateOptions));
-    this.datesArray = [];
+      let firstDay = date.toLocaleTimeString("fr-fr",dateOptions).split(' ')[0]; // gets the first weekday in the month (e.g. lundi mardi)
+      // this next part sets the first visible day to monday always, so that the calender is always in the form monday - saturday
+      let dayIndex = SoutenanceService.daysOfTheWeek.indexOf(firstDay.toLowerCase())-1;
+      date.setDate(date.getDate() - dayIndex);
+      console.log(date.toLocaleTimeString('fr-fr',dateOptions));
+      this.datesArray = [];
 
 
-    let stopper = 0;
+      let stopper = 0;
 
-    while (date.getMonth() != (parseInt(month) -1)){
-      this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
-      date.setDate(date.getDate() + 1);
-      stopper++;
-      if(stopper == 7)break;
-    }
-    stopper = 0;
-    let lastDate = new Date(date.getTime());
-
-    while (date.getMonth() == (parseInt(month)-1)){
-
-      this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
-      date.setDate(date.getDate() + 1);
-      lastDate = new Date(date.getTime());
-      let day = date.toLocaleDateString('fr-fr',dateOptions).split(' ')[0];
-      if(day.toLowerCase()=='dimanche'){
+      while (date.getMonth() != (parseInt(month) -1)){
+        this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
         date.setDate(date.getDate() + 1);
+        stopper++;
+        if(stopper == 7)break;
       }
-      stopper++;
-      if(stopper==31)break;
-    }
+      stopper = 0;
+      let lastDate = new Date(date.getTime());
+
+      while (date.getMonth() == (parseInt(month)-1)){
+
+        this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
+        date.setDate(date.getDate() + 1);
+        lastDate = new Date(date.getTime());
+        let day = date.toLocaleDateString('fr-fr',dateOptions).split(' ')[0];
+        if(day.toLowerCase()=='dimanche'){
+          date.setDate(date.getDate() + 1);
+        }
+        stopper++;
+        if(stopper==31)break;
+      }
 
 
-    let finalDay = lastDate.toLocaleTimeString('fr-fr',dateOptions).split(' ')[0];
-    dayIndex = SoutenanceService.daysOfTheWeek.indexOf(finalDay.toLowerCase());
-    stopper = 0;
-    if(dayIndex==0)dayIndex=7;
+      let finalDay = lastDate.toLocaleTimeString('fr-fr',dateOptions).split(' ')[0];
+      dayIndex = SoutenanceService.daysOfTheWeek.indexOf(finalDay.toLowerCase());
+      stopper = 0;
+      if(dayIndex==0)dayIndex=7;
 
-    while(dayIndex<=6){
-      this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
-      date.setDate(date.getDate() + 1);
-      dayIndex++;
-    }
+      while(dayIndex<=6){
+        this.datesArray.push(date.toLocaleDateString('fr-fr',{day: 'numeric',month: 'numeric'}));
+        date.setDate(date.getDate() + 1);
+        dayIndex++;
+      }
+    });
+
+    // formats datetime in a certain format
+
+
 
     return false;
 
@@ -257,7 +265,7 @@ export class SoutenanceCalenderComponent implements OnInit {
   }
 
   getNumberOfWeeks(): number[]{ //used to return iterable collection for ngfor
-    let weeknb = Math.ceil(this.datesArray.length/6);
+    let weeknb = Math.ceil(this.datesArray?.length/6);
     let numbers:number[] = [];
     for (let i = 0; i < weeknb; i++) {
       numbers.push(i);
@@ -281,15 +289,26 @@ export class SoutenanceCalenderComponent implements OnInit {
     let day = date.split('/')[0];
     let month = date.split('/')[1];
     let year = this.date.split('/')[2];
-    let soutenances = this.soutenanceService.getSoutenancesAtDay(day, month, year);
+    let soutenances = this.soutenanceList;
 
-    let count = soutenances.length;
+    let dateBefore = new Date(parseInt(year), parseInt(month)-1,parseInt(day));
+    let dateAfter = new Date(dateBefore);
+    dateAfter.setDate(dateBefore.getDate()+1);
+
+    let count = 0;
+    for(let soutenance of soutenances){
+      let soutenanceDate = new Date(soutenance.datetime);
+      if(soutenanceDate>dateBefore && soutenanceDate < dateAfter){
+        count++;
+      }
+    }
+
 
     if(count==0){
       return 'pas de soutenances';
     }
     if(count==1){
-      return '<b>1</b> soutenance <br>' + 'par <b>' + soutenances[0].getEtudiant() + "</b>";
+      return '<b>1</b> soutenance <br>' + 'par <b>' + soutenances[0].getEtudiantName() + "</b>";
     }
 
 

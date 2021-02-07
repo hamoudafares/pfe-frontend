@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Soutenance} from "./soutenance";
+import {HttpClient} from "@angular/common/http";
+import {AuthenticationService} from "./services/authentication.service";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -30,42 +33,71 @@ export class SoutenanceService {
                           'samedi',
   ];
 
-  soutenances: Soutenance[] = [];
+  static soutenances: Soutenance[] = [];
 
-  constructor() {
-    this.soutenances[0] = new Soutenance("anis",["fares","ons","nour"],"humour","28 09 2021 mardi 8:00 2h","aymen","B2");
-    this.soutenances[1] = new Soutenance("ons",["anis","fares","nour"],"dancing","28 09 2021 mardi 9:30 3h","aymen 2", "B1");
-    this.soutenances[2] = new Soutenance("fares",["anis","ons","nour"],"saa-ism","28 09 2021 mardi 10:00 1.5h","aymen 3", "B4");
-    this.soutenances[3] = new Soutenance("nour",["anis","ons","fares"],"fiver","28 09 2021 mardi 10:30 3h", "aymen", "B3");
-    this.soutenances[4] = new Soutenance("fares",["anis","ons","nour"],"fiver","29 09 2021 mardi 10:30 3h", "aymen", "B3");
+  constructor(private http: HttpClient, private auth: AuthenticationService) {
+    SoutenanceService.soutenances[0] = new Soutenance(["fares","ons","nour"], "28 09 2021 mardi 8:00 2h","B2");
+    SoutenanceService.soutenances[1] = new Soutenance(["anis","fares","nour"],"28 09 2021 mardi 9:30 3h", "B1");
+    SoutenanceService.soutenances[2] = new Soutenance(["anis","ons","nour"],"28 09 2021 mardi 10:00 1.5h", "B4");
+    SoutenanceService.soutenances[3] = new Soutenance(["anis","ons","fares"],"28 09 2021 mardi 10:30 3h",  "B3");
+    SoutenanceService.soutenances[4] = new Soutenance(["anis","ons","nour"],"29 09 2021 mardi 10:30 3h",  "B3");
   }
 
-  getSoutenances(): Soutenance[]{
-    return this.soutenances;
+  getSoutenances(){
+    return this.http.get(`${environment.apiUrl}/presentation`,this.auth.getTokenHeader());
   }
 
-  getSoutenancesAtMonth(month:string, year:string): Soutenance[]{
-    let soutenancesAtMonth: Soutenance[] = [];
+  getSoutenancesAtMonth(month:string, year:string){
 
-    for(let soutenance of this.soutenances){
-      if((soutenance.getMonth() == month)&&(soutenance.getYear() == year)){
-        soutenancesAtMonth.push(soutenance);
-      }
+    let monthStart = new Date(parseInt(year), parseInt(month)-1);
+
+    let nextMonth = (parseInt(month)+1) %12;
+
+    let year2 = parseInt(year);
+
+    if(nextMonth == 0){
+      year2++;
     }
 
-    return soutenancesAtMonth;  }
+    let monthEnd = new Date(nextMonth, year2);
 
-  getSoutenancesAtDay(day:string, month:string, year:string): Soutenance[]{
+    let date1 = monthStart.toLocaleDateString();
+    let date2 = monthEnd.toLocaleDateString();
 
-    let soutenancesAtDay: Soutenance[] = [];
+    let params = {
+      date_from: date1,
+      date_to: date2
+    };
 
-    for(let soutenance of this.soutenances){
-      if((soutenance.getDayDate() == day)&&(soutenance.getMonth() == month)&&(soutenance.getYear() == year)){
-        soutenancesAtDay.push(soutenance);
-      }
+    let httpParams = this.auth.getTokenHeader();
+    //@ts-ignore
+    httpParams.params = params;
+
+    return this.http.get(`${environment.apiUrl}/presentation/date`,httpParams);
+
     }
 
-    return soutenancesAtDay;
+  getSoutenancesAtDay(day:string, month:string, year:string){
+
+    let dayStart = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
+
+    let dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayStart.getDate());
+
+    let date1 = dayStart.toLocaleDateString();
+    let date2 = dayEnd.toLocaleDateString();
+
+    let params = {
+      date_from: date1,
+      date_to: date2
+    };
+
+    let httpParams = this.auth.getTokenHeader();
+    //@ts-ignore
+    httpParams.params = params;
+
+    return this.http.get(`${environment.apiUrl}/presentation/date`,httpParams);
+
   }
 
 }

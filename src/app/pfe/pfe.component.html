@@ -1,35 +1,84 @@
-<div class="panel panel-primary">
-    <div class="panel-heading" style="width: 100%">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchText">
+<!-- <div class="panel col-lg-12">
+    <div class=" header-section " style="width: 100%">
+        <div class="form-group input-group">
+            <input type="text" class="form-control" placeholder="Chercher..." [(ngModel)]="searchText">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
           </div>
-      <h2>Liste des pfes</h2>
     </div>
-    <div class="panel-body">
-        
-      <table class="table table-striped">
+    <div class="block-title">
+      <h2>Liste des PFEs</h2>
+    </div>
+    <div class="panel-body table-responsive">
+      <table class="table table-borderless table-vcenter table-striped">
         <thead>
           <tr>
             <th>Sujet</th>
-            <th>rapport</th>
             <th>entreprise</th>
             <th>Mission</th>
             <th>Mots cles</th>
-            <th>Valide</th>
+            <th>rapport</th>
+            <th *ngIf="isAdmin">Valide</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let pfe of pfes | async | filter:searchText">
-            <td>{{ pfe.sujet }}</td>
-            <td>{{ pfe.rapport }}</td>
-            <td>{{ pfe.entreprise }}</td>
-            <td>{{ pfe.mission }}</td>
-            <td>{{ pfe.motsCles }}</td>
-            <td>{{ pfe.valid }}</td>
-            <td>
-            </td>
+        <tbody> 
+          <tr *ngFor="let pfe of pfes | filter:searchText">
+              <td >{{ pfe.sujet}}</td>
+              <td>{{ pfe.entreprise }}</td>
+              <td>{{ pfe.mission }}</td>
+              <td>{{ pfe.motsCles }}</td>
+              <td><a style="padding-left: 25px;" href="{{pfe.rapport}}"  target="_blank"><i class="fa fa-file-pdf-o"></i></a></td>
+              <td *ngIf="isAdmin"><i [ngClass]="{'fa-check':pfe.valid==true,'fa-times':pfe.valid==false}" class="fa fa-lg" style="overflow: hidden; position: relative; margin-left: 20px;"></i></td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div> -->
+<div>
+  <div class=" header-section " style="width: 100%">
+    <div class="form-group input-group">
+        <input type="text" class="form-control" placeholder="Chercher..." [(ngModel)]="searchText">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+      </div>
+</div>
+
+<div class="block-title">
+  <h2>Liste des PFEs</h2>
+</div>
+<div *ngFor="let pfe of pfes | filter:searchText ">
+  <div class="col-sm-6" *ngIf="isAdmin">
+    <a href="javascript:void(0)" class="widget">
+    <div [ngClass]="{'themed-background-success': pfe.valid==true,'themed-background-danger':pfe.valid==false}" class="widget-content text-light-op">
+     <strong>{{pfe.sujet}}</strong> <span class="pull-right text-muted" style="color: black;"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;
+      {{pfe.entreprise}}</span>
+    </div>
+    <div class="widget-content themed-background-muted text-center" style="color: #454e59;">
+      {{pfe.mission}}<span class="pull-right text-muted"> Mission</span>
+    </div>
+    <div class="widget-content text-center row">
+    <h4 class="widget-heading text-dark">{{pfe.motsCles}} </h4>
+    </div>
+    <div class="widget-content text-center row">
+      <a style="padding-left: 25px;" href="{{pfe.rapport}}"  target="_blank"><i class="fa fa-file-pdf-o"></i></a>
+      </div>
+    </a>
+    </div>
+
+    <div class="col-sm-6" *ngIf="!isAdmin && pfe.valid==true">
+      <a href="javascript:void(0)" class="widget">
+      <div class="widget-content themed-background-dark text-light-op">
+       <strong>{{pfe.sujet}}</strong> <span class="pull-right text-muted"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;
+        {{pfe.entreprise}}</span>
+      </div>
+      <div class="widget-content themed-background-muted text-center" style="color: #454e59;">
+        {{pfe.mission}}<span class="pull-right text-muted"> Mission</span>
+      </div>
+      <div class="widget-content text-center row" *ngIf="isAdmin">
+      <h4 class="widget-heading text-dark">{{pfe.motsCles}} </h4>
+      </div>
+      <div class="widget-content text-center row">
+        <a style="padding-left: 25px;" href="{{pfe.rapport}}"  target="_blank"><i class="fa fa-file-pdf-o"></i></a>
+        </div>
+      </a>
+      </div>
   </div>
+</div>
