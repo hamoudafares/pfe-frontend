@@ -32,6 +32,8 @@ import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { Role } from '../models/role';
 import { User } from '../models/user';
+import { MatDialogRef } from "@angular/material/dialog";
+
 
 
 @Component({ templateUrl: 'login.component.html' })
@@ -47,7 +49,8 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        public dialogRef: MatDialogRef<LoginComponent>
     ) { 
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) { 
@@ -62,7 +65,7 @@ export class LoginComponent implements OnInit {
         });
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
     }
 
     // convenience getter for easy access to form fields
@@ -90,6 +93,9 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 });
     }
+    close() {
+        this.dialogRef.close();
+      }
 }
 
 

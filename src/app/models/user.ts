@@ -10,4 +10,5 @@ export class User {
     role: Role;
     token?: string;
     email: string;
+    profilePic:string;
 }

@@ -30,6 +30,13 @@ import { CommonModule } from '@angular/common';
 import { PfeComponent } from './pfe/pfe.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ExportAsPdfComponent } from './export-as-pdf/export-as-pdf.component';
+import { DefaultImagePipe } from './pipes/default-image.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { LocalInfoComponent } from './local-info/local-info.component';
+import { FooterComponent } from './footer/footer.component';
+import { AboutComponent } from './about/about.component';
+
 
 @NgModule({
   declarations: [
@@ -53,7 +60,11 @@ import { ExportAsPdfComponent } from './export-as-pdf/export-as-pdf.component';
     HomeComponent,
     AdminComponent,
     PfeComponent,
-    ExportAsPdfComponent
+    ExportAsPdfComponent,
+    DefaultImagePipe,
+    LocalInfoComponent,
+    FooterComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +73,9 @@ import { ExportAsPdfComponent } from './export-as-pdf/export-as-pdf.component';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

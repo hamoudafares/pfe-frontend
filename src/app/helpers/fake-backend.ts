@@ -14,7 +14,8 @@ let users: User[] = [{
     role: Role.Admin,
     password: 'ons123',
     cin:125125,
-    email: 'onssellami@gmail.com'
+    email: 'onssellami@gmail.com',
+    profilePic:'default.png'
 },
 {
     id:2,
@@ -24,7 +25,8 @@ let users: User[] = [{
     role: Role.Student,
     password: 'nour123',
     cin:123456,
-    email: 'nourkaroui@gmail.com'
+    email: 'nourkaroui@gmail.com',
+    profilePic:''
 },
 {
     id: 3,
@@ -34,7 +36,8 @@ let users: User[] = [{
     role: Role.Admin,
     password: 'fares123',
     cin:789456,
-    email: 'fareshamouda@gmail.com'
+    email: 'fareshamouda@gmail.com',
+    profilePic:''
 },
 {
     id: 4,
@@ -44,7 +47,8 @@ let users: User[] = [{
     role: Role.Teacher,
     password: 'anis123',
     cin:321654,
-    email: 'buph@gmail.com'
+    email: 'buph@gmail.com',
+    profilePic:''
 }];
 
 const pfes: Pfe[]=[
@@ -118,19 +122,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 cin:user.cin,
                 token: `fake-jwt-token.${user.id}`
             });
-            // const { email, password } = body;
-            // const user = users.find(x => x.email === email && x.password === password && x.isVerified);
-            
-            // if (!user) return error('Email or password is incorrect');
-
-            // // add refresh token to user
-            // user.refreshTokens.push(generateRefreshToken());
-            // localStorage.setItem(usersKey, JSON.stringify(users));
-
-            // return ok({
-            //     ...basicDetails(user),
-            //     jwtToken: generateJwtToken(user)
-            // });
         }
 
         function getUsers() {
@@ -210,7 +201,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function ok(body?: any) {
             return of(new HttpResponse({ status: 200, body }))
-                .pipe(delay(500)); // delay observable to simulate server api call
+                .pipe(delay(50)); // delay observable to simulate server api call
         }
 
         function error(message: any) {
@@ -224,8 +215,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function basicDetails(user: any) {
-            const { id, cin, firstName, lastName, email, role } = user;
-            return { id, cin, firstName, lastName, email, role };
+            const { id, cin, firstName, lastName, email, role,profilePic } = user;
+            return { id, cin, firstName, lastName, email, role, profilePic };
         }
 
         function basicDetailsPfe(pfe: any) {
@@ -273,17 +264,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!isLoggedIn()) return;
             const id = parseInt(headers.get('Authorization').split('.')[1]);
             return users.find(x => x.id === id);
-            //  check if jwt token is in auth header
-            //  const authHeader = headers.get('Authorization');
-            //  if (!authHeader.startsWith('Bearer fake-jwt-token')) return;
- 
-            //  // check if token is expired
-            //  const jwtToken = JSON.parse(atob(authHeader.split('.')[1]));
-            //  const tokenExpired = Date.now() > (jwtToken.exp * 1000);
-            //  if (tokenExpired) return;
- 
-            //  const user = users.find(x => x.id === jwtToken.id);
-            //  return user;
         
         }
 

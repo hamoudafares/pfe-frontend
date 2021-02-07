@@ -1,0 +1,13 @@
+.footer{
+    background-color: #454e59;
+    margin: 0px auto;
+    padding: 20px 0px;
+    color: white;
+    display: block;
+    box-sizing: border-box;
+}
+
+div>div>a{
+    margin-right: 5px;
+    margin-top: 50px;
+}

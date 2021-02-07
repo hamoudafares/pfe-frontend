@@ -3,9 +3,9 @@
     <li class="hidden-xs animation-fadeInQuick">
       <a routerLink="/home"><strong>PFEs INSAT</strong></a>
     </li>
-    <li>
+    <li *ngIf="currentUser">
 
-      <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+      <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();" >
         <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
         <i class="fa fa-bars fa-fw animation-fadeInRight" id="sidebar-toggle-full"></i>
       </a>
@@ -15,8 +15,8 @@
 
   <ul class="nav navbar-nav-custom pull-right">
     <li>
-      <form class="navbar-form-custom" method="get">
-        <input type="text" id="navSearch" name="topSearch" class="form-control" placeholder="Chercher Sujets Pfe...">
+      <form class="navbar-form-custom" method="get" *ngIf="currentUser">
+        <input type="text" id="navSearch" name="topSearch" class="form-control" placeholder="Chercher...">
       </form>
     </li>
     <li *ngIf="currentUser">
@@ -25,11 +25,20 @@
         </i>
       </a>
     </li>
+    <li *ngIf="!currentUser">
+      <app-login id="loginId"></app-login>
+      <a (click)="openDialog()">
+        <strong>
+          <i class="fa fa-sign-in"></i>
+          &nbsp; Se connecter</strong>
+      </a>
+    </li>
 
     <li class="dropdown" *ngIf="currentUser">
 
       <a class="dropdown-toggle" data-toggle="dropdown">
-        <i class="gi gi-woman"></i>
+        <!-- <i class="gi gi-woman"></i> -->
+        <img src="assets/images/{{currentUser?.profilePic | defaultImage}}" alt="avatar">
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header">
@@ -44,7 +53,7 @@
         </li>
 
         <li>
-          <a routerLink="/profile/professor/:id">
+          <a routerLink="/profile/professor/{{currentUser.id}}">
             <i class="fa fa-pencil-square fa-fw pull-right"></i>
             Profil
           </a>
@@ -84,7 +93,7 @@
 
 </header>
 
-<div id="sidebar">
+<div id="sidebar" *ngIf="currentUser">
   <div id="sidebar-brand" class="themed-background">
     <a class="sidebar-title">
       <i class="fa">

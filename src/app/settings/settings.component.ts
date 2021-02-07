@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -22,10 +22,11 @@ export class SettingsComponent implements OnInit {
   id: string;
   loading = false;
   submitted = false;
-  urllink:string="assets/images/default.png";
+  @Input() urllink:string;
   user = this.userService.userValue;
   currentUser: User;
   navigateTo:any;
+  
  
   constructor(
       private formBuilder: FormBuilder,
@@ -49,8 +50,10 @@ export class SettingsComponent implements OnInit {
             role: ['{{this.user.role}}', Validators.required],
             cin:['{{this.user.cin}}',Validators.required],
             password: ['', [Validators.minLength(6),Validators.nullValidator]],
-            confirmPassword: ['', Validators.nullValidator]
+            confirmPassword: ['', Validators.nullValidator],
+            profilePic:['{{this.user.profilePic}}',Validators.nullValidator]
       }, formOptions);
+
       console.log("form",this.form);
       this.userService.getById(this.id)
                 .pipe(first())
@@ -73,17 +76,24 @@ export class SettingsComponent implements OnInit {
       this.loading = true;
       this.updateUser();
   }
-  onSubmitImage(){
-    this.submitted = true;
-    this.loading = true;
-      this.selectFile(event);
-  }
+//   onSubmitImage(){
+//     this.submitted = true;
+//     this.loading = true;
+//     this.selectFile(event);
+//     console.log("selectFile",this.selectFile(event));
+//     console.log("image submitted user pp",this.user.profilePic);
+    
+//   }
   selectFile(event){
       if(event.target.files){
           var reader = new FileReader();
           reader.readAsDataURL(event.target.files[0]);
           reader.onload = (event:any)=>{
+              console.log("event target result", event.target.result);
+              
               this.urllink = event.target.result;
+              console.log("urllink ", this.urllink);
+              
           }
       }
   }
@@ -102,6 +112,7 @@ export class SettingsComponent implements OnInit {
   }
 
 private updateUser() {
+    this.selectFile(event);
     this.userService.update(this.id, this.form.value)
         .pipe(first())
         .subscribe({

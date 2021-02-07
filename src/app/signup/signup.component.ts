@@ -38,8 +38,8 @@ export class SignupComponent implements OnInit {
             lastName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             role: ['', Validators.required],
-            password: ['', [Validators.minLength(6), Validators.required]],
-            confirmPassword: ['', Validators.required]
+            // password: ['', [Validators.minLength(6), Validators.required]],
+            // confirmPassword: ['', Validators.required]
         }, formOptions);
 
             this.userService.getById(this.id)
