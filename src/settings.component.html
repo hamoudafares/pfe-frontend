@@ -1,0 +1,138 @@
+<h1>Paramètres</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="serverLoaded">
+    <div class="form-group col">
+        <h3>Modifier la photo de profil</h3>
+        <img class="rounded-circle test" [src]="urllink">
+        <br>
+        <label for="file-upload" class="btn btn-link"><i class="fa fa-upload"></i> &nbsp;Télecharger une photo<input id="file-upload" type="file" class="btn btn-sm btn-primary" (change)="selectFile($event)"></label>
+        
+    </div>
+    <div class="form-group col-5" *ngIf="isAdmin">
+        <label>CIN</label>
+        <input type="text" formControlName="cin" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cin.errors }" />
+        <div *ngIf="submitted && f.cin.errors" class="invalid-feedback">
+            <div *ngIf="f.cin.errors.required">N° de la carte d'étudiant est obligatoire</div>
+        </div>
+    </div>
+    <div class="form-group col-5" *ngIf="isAdmin">
+        <label>Prénom</label>
+        <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+        <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">Le prénom est obligatoire</div>
+        </div>
+    </div>
+    <div class="form-group col-5" *ngIf="isAdmin">
+        <label>Nom</label>
+        <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+            <div *ngIf="f.lastName.errors.required">Le nom est obligatoire</div>
+        </div>
+    </div>
+<div *ngIf="isAdmin" class="form-row">
+    <div class="form-group col-7">
+        <label>Email</label>
+        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email est obligatoire</div>
+            <div *ngIf="f.email.errors.email">L'e-mail doit être une adresse e-mail valide</div>
+        </div>
+    </div>
+    <div class="form-group col">
+        <label>Role</label>
+        <select formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
+            <option value=""></option>
+            <option value="Student">Etudiant</option>
+            <option value="Teacher">Professeur</option>
+            <option value="Admin">Admin</option>
+        </select>
+        <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+            <div *ngIf="f.role.errors.required">Role est obligatoire</div>
+        </div>
+    </div>
+</div>
+<div>
+    <h3 class="pt-3">Changer le mot de passe</h3>
+    <p>Laisser vide pour conserver le même mot de passe</p>
+</div>
+<div class="form-row">
+    <div class="form-group col">
+        <label>Mot de passe</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Mot de passe est obligatoire</div>
+            <div *ngIf="f.password.errors.minlength">Le mot de passe doit être au moins de 6 caractères</div>
+        </div>
+    </div>
+    <div class="form-group col">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+        <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+            <div *ngIf="f.confirmPassword.errors.required">Confirmer le mot de passe est obligatoire</div>
+            <div *ngIf="f.confirmPassword.errors.mustMatch">les mots de passe doivent correspondre</div>
+        </div>
+    </div>
+</div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary" style="margin-right: 10px;">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Enregistrer
+        </button>
+        <a (click)="navigation()" class="btn btn-link">Annuler</a>
+    </div>
+    
+</form>
+<!-- <form >
+    <div class="form-group col">
+        <h3>Change profile picture</h3>
+        <img class="rounded-circle test" [src]="urllink">
+        <br>
+        <input type="file" class="btn btn-sm btn-primary" (change)="selectFile($event)">
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary" (click)="onSubmitImage()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+        <a routerLink=".." class="btn btn-link">Cancel</a>
+    </div>
+</form> -->
+
+
+<!-- <div class="card-container" style="background-color: darkcyan;">
+    <span>
+        <h2><i class="fas fa-user-cog"></i>Paramètres</h2>
+    </span>
+    <span>
+        <img class="rounded-circle test" [src]="urllink">
+        <br>
+        <input type="file" class="btn btn-sm btn-primary" (change)="selectFile($event)">
+            <button [disabled]="loading" class="btn btn-primary" (click)="onSubmitImage()">
+                Changer
+            </button>
+            <a routerLink="/login" class="btn btn-link">Annuler</a>  
+    </span>
+    <div>
+        <div class="form-row">
+                <label>Nouveau mot de passe</label>
+                <input type="password" formControlName="password" class="form-control col-4" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+                <br>
+                <label>Confirmer le nouveau mot de passe</label>
+                <input type="password" formControlName="confirmPassword" class="form-control col-4" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+                <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                    <div *ngIf="f.confirmPassword.errors.required">Confirmer le nouveau mot de passe</div>
+                    <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                </div>
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+                Changer
+            </button>
+            <a routerLink="/login" class="btn btn-link">Annuler</a>
+        </div>
+    </div>
+
+</div> -->

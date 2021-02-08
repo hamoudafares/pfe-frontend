@@ -1,0 +1,21 @@
+<div *ngIf="authenticationService.user != null">
+    <h1>LOGO</h1>
+    <a class="navbar-brand" routerLink="/signup" routerLinkActive="active" *ngIf="isAdmin()">Creer un Utilisateur</a>
+    <a class="navbar-brand" routerLink="/reset-password" routerLinkActive="active">Reset Password</a>
+    <div class="card mt-4">
+        <h4 class="card-header">Home</h4>
+        <div class="card-body">
+            <p>Your role is: <strong>{{currentUser.role}}</strong>.</p>
+            <p>This page can be accessed by <u>all authenticated users</u>.</p>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="authenticationService.user == null">
+  <div class="row"><app-index></app-index></div>
+  <br>
+  <div class="row"><app-local-info></app-local-info></div>
+
+
+
+
+</ng-container>
