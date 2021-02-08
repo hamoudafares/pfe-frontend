@@ -55,113 +55,103 @@ import { HttpClient } from '@angular/common/http';
 
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {AuthenticationService} from "./authentication.service";
+import {BehaviorSubject} from "rxjs";
 import { finalize, map } from 'rxjs/operators';
 
-const baseUrl = `${environment.apiUrl}/users`;
+const baseUrl = `${environment.apiUrl}/user`;
+const profUrl = `${environment.apiUrl}/teachers`;
+const studUrl = `${environment.apiUrl}/students`;
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    private userSubject: BehaviorSubject<User>;
-    public user: Observable<User>;
+  private userSubject: BehaviorSubject<User>;
+  private user;
 
-    constructor(
-        private router: Router,
-        private http: HttpClient
-    ) {
-        this.userSubject = new BehaviorSubject<User>(null);
-        this.user = this.userSubject.asObservable();
-    }
-    public get userValue(): User {
-        return this.userSubject.value;
+  public get userValue(): User {
+    return this.userSubject.value;
+  }
+
+    constructor(private http: HttpClient, private auth: AuthenticationService) {
+      this.userSubject = new BehaviorSubject<User>(null);
+      this.user = auth.user
     }
 
     getAll() {
-        return this.http.get<User[]>(baseUrl);
+        return this.http.get<User[]>(`${baseUrl}`, this.auth.getTokenHeader());
     }
-
 
     getById(id: string) {
-        return this.http.get<User>(`${baseUrl}/${id}`);
+        return this.http.get<User>(`${baseUrl}/${id}`, this.auth.getTokenHeader());
     }
 
-    login(email: string, password: string) {
-        return this.http.post<any>(`${baseUrl}/authenticate`, { email, password }, { withCredentials: true })
-            .pipe(map(user => {
-                this.userSubject.next(user);
-                this.startRefreshTokenTimer();
-                return user;
-            }));
+    create(params: {role: string}) {
+    console.log(params);
+    if(params.role.toLowerCase() == 'student') {
+      return this.http.post(`${studUrl}`, params, this.auth.getTokenHeader());
+    }
+    if(params.role.toLowerCase() == 'teacher') {
+      return this.http.post(`${profUrl}`, params, this.auth.getTokenHeader());
     }
 
-    logout() {
-        localStorage.removeItem('user');
-        this.userSubject.next(null);
-        this.router.navigate(['/login']);
-    }
+    return this.http.post(`${baseUrl}`, params, this.auth.getTokenHeader())
 
-    refreshToken() {
-        return this.http.post<any>(`${baseUrl}/refresh-token`, {}, { withCredentials: true })
-            .pipe(map((user) => {
-                this.userSubject.next(user);
-                this.startRefreshTokenTimer();
-                return user;
-            }));
-    }
-
-    register(user: User) {
-        return this.http.post(`${baseUrl}/register`, user);
-    }
-
-    verifyEmail(token: string) {
-        return this.http.post(`${baseUrl}/verify-email`, { token });
-    }
-
-    create(params: any) {
-      return this.http.post(baseUrl, params);
   }
 
     update(id: string, params: any) {
-        return this.http.put(`${baseUrl}/${id}`, params);
+        return this.http.put(`${baseUrl}/${id}`, params, this.auth.getTokenHeader());
     }
 
     delete(id: string) {
-        // return this.http.delete(`${baseUrl}/${id}`);
-        return this.http.delete(`${baseUrl}/${id}`)
-            .pipe(finalize(() => {
-                // auto logout if the logged in user was deleted
-                if (id == this.userValue.id.toString())
-                    this.logout();
-            }));
+        return this.http.delete(`${baseUrl}/${id}`, this.auth.getTokenHeader());
     }
 
-    validateResetToken(token: string) {
-        return this.http.post(`${baseUrl}/validate-reset-token`, { token });
-    }
+  refreshToken() {
+    return this.http.post<any>(`${baseUrl}/refresh-token`, {}, { withCredentials: true })
+      .pipe(map((user) => {
+        this.userSubject.next(user);
+        this.startRefreshTokenTimer();
+        return user;
+      }));
+  }
 
-    forgotPassword(email: string) {
-        return this.http.post(`${baseUrl}`, { email });
-    }
+  register(user: User) {
+    return this.http.post(`${baseUrl}/register`, user);
+  }
 
-    resetPassword(token: string, password: string, confirmPassword: string) {
-        return this.http.post(`${baseUrl}/reset-password`, { token, password, confirmPassword });
-    }
+  verifyEmail(token: string) {
+    return this.http.post(`${baseUrl}/verify-email`, { token });
+  }
 
-    private refreshTokenTimeout;
 
-    private startRefreshTokenTimer() {
-        // parse json object from base64 encoded jwt token
-        const token = JSON.parse(atob(this.userValue.token.split('.')[1]));
+  validateResetToken(token: string) {
+    return this.http.post(`${baseUrl}/validate-reset-token`, { token });
+  }
 
-        // set a timeout to refresh the token a minute before it expires
-        const expires = new Date(token.exp * 1000);
-        const timeout = expires.getTime() - Date.now() - (60 * 1000);
-        this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
-    }
+  forgotPassword(email: string) {
+    return this.http.post(`${baseUrl}`, { email });
+  }
 
-    private stopRefreshTokenTimer() {
-        clearTimeout(this.refreshTokenTimeout);
-    }
-    
+  resetPassword(token: string, password: string, confirmPassword: string) {
+    return this.http.post(`${baseUrl}/reset-password`, { token, password, confirmPassword });
+  }
+
+
+
+  private refreshTokenTimeout;
+
+  private startRefreshTokenTimer() {
+    // parse json object from base64 encoded jwt token
+    const token = JSON.parse(atob(this.userValue.token.split('.')[1]));
+
+    // set a timeout to refresh the token a minute before it expires
+    const expires = new Date(token.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
+  }
+
 }

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {SoutenanceCalenderComponent} from "./soutenance-calender/soutenance-calender.component";
 import {AdminUploadStudentsComponent} from "./admin-upload-students/admin-upload-students.component";
 import {ViewProfileComponent} from "./view-profile/view-profile.component";
@@ -13,12 +13,9 @@ import {AuthGuard} from "./helpers/auth.guard";
 import {Role} from "./models/role";
 import {IndexComponent} from "./index/index.component";
 import {PfeComponent} from "./pfe/pfe.component";
-
-import {ViewSoutenanceComponent} from './view-soutenance/view-soutenance.component';
-
-import { LocalInfoComponent } from './local-info/local-info.component';
-import { FooterComponent } from './footer/footer.component';
-
+import {SubmitSoutenanceFormComponent} from "./submit-soutenance-form/submit-soutenance-form.component";
+import {TeacherListComponent} from "./teacher-list/teacher-list.component";
+import {StudentListComponent} from "./student-list/student-list.component";
 
 const routes: Routes = [
   {path: "soutenances", component:SoutenanceCalenderComponent},
@@ -26,20 +23,21 @@ const routes: Routes = [
   {path: "soutenances/Week/:weekdate", component: SoutenanceCalenderComponent},
   {path: "soutenances/Day/:daydate", component: SoutenanceCalenderComponent},
   {path: "soutenances/:xd", component: SoutenanceCalenderComponent},
-  {path: "soutenances/one/:id", component: ViewSoutenanceComponent},
   {path: "admin/upload", component: AdminUploadStudentsComponent},
   {path: "profile/professor/:id", component: ViewProfileComponent},
+  {path: "profile/student/:id", component: ViewProfileComponent},
   {path: "login", component: LoginComponent},
   {path: "signup", component: SignupComponent},
   {path: "reset-password", component:ResetPasswordComponent},
-  {path: "home",component:HomeComponent},
-  {path: "settings/:id", component: SettingsComponent},
+  {path: "",component:HomeComponent},
+  {path: "settings", component: SettingsComponent},
+  {path: "settings/:id", component: SettingsComponent, canActivate: [AuthGuard], data: { roles: [ Role.Admin]}},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
   {path: "index",component:IndexComponent},
   {path: "pfe",component:PfeComponent},
-  {path: "local",component:LocalInfoComponent},
-  {path: "footer",component:FooterComponent},
-  {path: "about",component:FooterComponent},
+  {path: "test",component:SubmitSoutenanceFormComponent},
+  {path: "teacherlist",component:TeacherListComponent},
+  {path: "studentlist",component:StudentListComponent},
   {path: '**', redirectTo: '' },
 ];
 
@@ -47,4 +45,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+}

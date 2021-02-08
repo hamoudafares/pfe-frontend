@@ -17,21 +17,27 @@ export class NavbarComponent implements OnInit {
   currentUser: User;
   closeResult = '';
   constructor(private router: Router,
-    private authenticationService: AuthenticationService,public matDialog: MatDialog) { 
-      this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-    }
+              public authenticationService: AuthenticationService,public matDialog: MatDialog) {
+    this.currentUser = this.authenticationService.user;
+  }
 
   ngOnInit(): void {
-    console.log(this.currentUser.profilePic);
-    
+
   }
   get isAdmin() {
-    return this.currentUser && this.currentUser.role === Role.Admin;
+    return this.currentUser && this.currentUser?.role === Role.Admin;
+  }
+  isTeacher() {
+    return this.currentUser && this.currentUser?.role === Role.Professor;
+  }
+  isStudent() {
+    
+    return this.currentUser && this.currentUser?.role === Role.Student;
   }
 
   logout() {
     this.router.navigate([".."]);
-    this.authenticationService.logout();  
+    this.authenticationService.logout();
   }
 
   openDialog() {

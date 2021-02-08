@@ -1,0 +1,130 @@
+<h1>S'inscrire</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+        <div class="form-group col-5">
+            <label>Prénom</label>
+            <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                <div *ngIf="f.firstName.errors.required">Le prénom est requis</div>
+            </div>
+        </div>
+        <div class="form-group col-5">
+            <label>Nom</label>
+            <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="f.lastName.errors.required">Le nom est requis</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-7">
+            <label>Email</label>
+            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Email est requis</div>
+                <div *ngIf="f.email.errors.email">L'email doit être une adresse email valide</div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-7">
+                <label>CIN</label>
+                <input type="text" formControlName="cin" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cin.errors }" />
+                <div *ngIf="submitted && f.cin.errors" class="invalid-feedback">
+                    <div *ngIf="f.cin.errors.required">CIN est requis</div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="form-row">
+            <div class="form-group col-7">
+                <label>password</label>
+                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">password est requis</div>
+                    <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-7">
+                <label>confirmPassword</label>
+                <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+                <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                    <div *ngIf="f.confirmPassword.errors.required">confirmPassword est requis</div>
+                    <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                </div>
+            </div>
+        </div> -->
+        <div class="form-group col">
+            <label>Role</label>
+            <select formControlName="role" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
+                <option value=""></option>
+                <option value="Student" *ngIf="userRole=='Student'">Student</option>
+                <option value="Teacher" *ngIf="userRole=='Teacher'">Teacher</option>
+                <option value="Admin" *ngIf="userRole=='Admin'">Administrateur</option>
+            </select>
+            <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                <div *ngIf="f.role.errors.required">Role est requis</div>
+            </div>
+        </div>
+        <!-- when user is a teacher or a student-->
+        <div class="form-row" [hidden]="userRole!='Student'">
+            <div class="form-group col-7">
+                <label>N°Carte d'etudiant</label>
+                <input type="text" formControlName="sid" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.sid.errors }" />
+                <div *ngIf="submitted && f.sid.errors" class="invalid-feedback">
+                    <div *ngIf="f.sid.errors.required">N°Carte d'etudiant est obligatoire</div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="form-group col">
+            <label>Filiere</label>
+            <select formControlName="filiere" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.filiere.errors }">
+                <option value=""></option>
+                <option value="gl">GL</option>
+                <option value="iia">IIA</option>
+                <option value="rt">RT</option>
+                <option value="imi">IMI</option>
+                <option value="bio">BIO</option>
+                <option value="ch">CH</option>
+            </select>
+            <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                <div *ngIf="f.role.errors.required">Role est requis</div>
+            </div>
+        </div> -->
+        <div class="form-row" [hidden]="userRole!='Student'">
+            <div class="form-group col-7">
+                <label>Option</label>
+                <input type="text" formControlName="option" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.option.errors }" />
+                <div *ngIf="submitted && f.option.errors" class="invalid-feedback">
+                    <div *ngIf="f.option.errors.required">option est obligatoire</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row" [hidden]="userRole!='Teacher' && userRole!='Student'">
+            <div class="form-group col-7">
+                <label>Specialité</label>
+                <input type="text" formControlName="speciality" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.speciality.errors }" />
+                <div *ngIf="submitted && f.speciality.errors" class="invalid-feedback">
+                    <div *ngIf="f.speciality.errors.required">Specialité est obligatoire</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row" [hidden]="userRole!='Teacher' && userRole!='Student'">
+            <div class="form-group col-7">
+                <label>Année</label>
+                <input type="text" formControlName="year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.year.errors }" />
+                <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
+                    <div *ngIf="f.year.errors.required">année est obligatoire</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary" style="margin-right: 10px;">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Enregistrer
+        </button>
+        <a routerLink="/admin" class="btn btn-link">Annuler</a>
+    </div>
+</form>

@@ -3,7 +3,7 @@
     <li class="hidden-xs animation-fadeInQuick">
       <a routerLink="/home"><strong>PFEs INSAT</strong></a>
     </li>
-    <li *ngIf="currentUser">
+    <li *ngIf="authenticationService.user">
 
       <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();" >
         <i class="fa fa-ellipsis-v fa-fw animation-fadeInRight" id="sidebar-toggle-mini"></i>
@@ -15,17 +15,17 @@
 
   <ul class="nav navbar-nav-custom pull-right">
     <li>
-      <form class="navbar-form-custom" method="get" *ngIf="currentUser">
+      <form class="navbar-form-custom" method="get" *ngIf="authenticationService.user">
         <input type="text" id="navSearch" name="topSearch" class="form-control" placeholder="Chercher...">
       </form>
     </li>
-    <li *ngIf="currentUser">
-      <a routerLink="/settings/{{currentUser.id}}">
+    <li *ngIf="authenticationService.user">
+      <a routerLink="/settings/{{authenticationService.user.id}}">
         <i class="gi gi-settings">
         </i>
       </a>
     </li>
-    <li *ngIf="!currentUser">
+    <li *ngIf="authenticationService.user == null">
       <app-login id="loginId"></app-login>
       <a (click)="openDialog()">
         <strong>
@@ -34,11 +34,11 @@
       </a>
     </li>
 
-    <li class="dropdown" *ngIf="currentUser">
+    <li class="dropdown" *ngIf="authenticationService.user">
 
       <a class="dropdown-toggle" data-toggle="dropdown">
         <!-- <i class="gi gi-woman"></i> -->
-        <img src="assets/images/{{currentUser?.profilePic | defaultImage}}" alt="avatar">
+        <img src="assets/images/{{authenticationService.user?.profilePic | defaultImage}}" alt="avatar">
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header">
@@ -53,10 +53,16 @@
         </li>
 
         <li>
-          <a routerLink="/profile/professor/{{currentUser.id}}">
+          <a routerLink="/profile/professor/{{authenticationService.user.id}}" *ngIf="isTeacher()">
             <i class="fa fa-pencil-square fa-fw pull-right"></i>
             Profil
           </a>
+
+          <a routerLink="/profile/student/{{authenticationService.user.id}}" *ngIf="isStudent()">
+            <i class="fa fa-pencil-square fa-fw pull-right"></i>
+            Profil
+          </a>
+
         </li>
 
         <li *ngIf="isAdmin">
@@ -71,7 +77,7 @@
         </li>
 
         <li>
-          <a routerLink="/settings/{{currentUser.id}}">
+          <a routerLink="/settings">
             <i class="fa fa-gears fa-fw pull-right"></i>
             Paramètres
           </a>
@@ -93,7 +99,7 @@
 
 </header>
 
-<div id="sidebar" *ngIf="currentUser">
+<div id="sidebar" *ngIf="authenticationService.user">
   <div id="sidebar-brand" class="themed-background">
     <a class="sidebar-title">
       <i class="fa">
@@ -112,6 +118,9 @@
           </li>
           <li>
             <a [routerLink]="['/soutenances']" class=""><i class="gi gi-calendar sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Calendrier PFEs</span></a>
+          </li>
+          <li>
+            <a [routerLink]="['/teacherlist']" class=""><i class="gi gi-book sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Liste Des Professeurs</span></a>
           </li>
           <!-- <li>
             <a  class="" style="padding-right: 10px;"><i class="fa fa-list-ul"></i><span style="margin-left: 10px;" class="sidebar-nav-mini-hide"> Liste des PFEs</span></a>

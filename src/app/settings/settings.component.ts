@@ -26,6 +26,8 @@ export class SettingsComponent implements OnInit {
   user = this.userService.userValue;
   currentUser: User;
   navigateTo:any;
+
+  serverLoaded: boolean = false;
   
  
   constructor(
@@ -35,29 +37,47 @@ export class SettingsComponent implements OnInit {
       private userService: UserService,
       private alertService: AlertService,
       private authenticationService: AuthenticationService
-  ) {this.authenticationService.currentUser.subscribe(x => this.currentUser = x);}
+  ) {
+    this.currentUser = authenticationService.user;
+  }
 
   ngOnInit() {
       this.id = this.route.snapshot.params['id'];
       console.log("this users id is route param",this.id);
       console.log('this user is', this.user);
-      
-      const formOptions: AbstractControlOptions = { validators: MustMatch('password', 'confirmPassword') };
-      this.form = this.formBuilder.group({
-            firstName: ['{{this.user.firstName}}', Validators.required],
-            lastName: ['{{this.user.lastName}}', Validators.required],
-            email: ['{{this.user.email}}', [Validators.required, Validators.email]],
-            role: ['{{this.user.role}}', Validators.required],
-            cin:['{{this.user.cin}}',Validators.required],
-            password: ['', [Validators.minLength(6),Validators.nullValidator]],
-            confirmPassword: ['', Validators.nullValidator],
-            profilePic:['{{this.user.profilePic}}',Validators.nullValidator]
-      }, formOptions);
 
-      console.log("form",this.form);
-      this.userService.getById(this.id)
-                .pipe(first())
-                .subscribe(x => this.form.patchValue(x));
+      if(this.id == null){
+        this.id = this.currentUser.id;
+        if(this.id== null){
+          this.router.navigate(['']);
+        }
+      }
+
+      this.userService.getById(this.id).subscribe( (userData)=>{
+
+        this.user = userData as User;
+
+        const formOptions: AbstractControlOptions = { validators: MustMatch('password', 'confirmPassword') };
+        this.form = this.formBuilder.group({
+          firstName: [this.user.firstName, Validators.required],
+          lastName: [this.user.familyName, Validators.required],
+          email: [this.user.email, [Validators.required, Validators.email]],
+          role: [this.user.role, Validators.required],
+          cin:[this.user.CIN,Validators.required],
+          password: ['', [Validators.minLength(6),Validators.nullValidator]],
+          confirmPassword: ['', Validators.nullValidator],
+          profilePic:[this.user.profilePic,Validators.nullValidator]
+        }, formOptions);
+
+        //console.log("form",this.form);
+        this.serverLoaded = true;
+
+        this.userService.getById(this.id)
+          .pipe(first())
+          .subscribe(x => this.form.patchValue(x));
+      }, (err)=>{this.router.navigate(['']);});
+
+
   }
 
   // convenience getter for easy access to form fields
@@ -89,10 +109,10 @@ export class SettingsComponent implements OnInit {
           var reader = new FileReader();
           reader.readAsDataURL(event.target.files[0]);
           reader.onload = (event:any)=>{
-              console.log("event target result", event.target.result);
+              //console.log("event target result", event.target.result);
               
               this.urllink = event.target.result;
-              console.log("urllink ", this.urllink);
+              //console.log("urllink ", this.urllink);
               
           }
       }

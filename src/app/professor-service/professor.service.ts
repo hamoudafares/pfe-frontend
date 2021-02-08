@@ -1,38 +1,46 @@
 import { Injectable } from '@angular/core';
 import {Professor} from "../models/professor";
+import {Student} from "../models/student";
+import {Pfe} from "../models/pfe";
+import {Soutenance} from "../soutenance";
+import {SoutenanceService} from "../soutenance.service";
+import {RequestEncadrement} from "../models/request";
+import {StudentService} from "../student-service/student.service";
+import {HttpClient} from "@angular/common/http";
+import {AuthenticationService} from "../services/authentication.service";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfessorService {
 
-  professors: Professor[] = [];
+   static professors: Professor[] = [];
 
-  constructor() {
-    this.professors[0] = new Professor({id: 1, firstName: "Aymen",
-      familyName: "Sellaouti", CIN: 1, speciality: "GL",
-      email: "aymen.sellaouti@gmail.com", anneeUniversitaire: "2020/2021", profilePicUrl: "../../assets/aymen-sellaouti-pfp.jpg" });
+   constructor(private http: HttpClient, private auth: AuthenticationService) {
+   }
 
-    this.professors[0].linkedInLink = "aymen-sellaouti-b0427731";
-    this.professors[0].etudiantsEncadre = [{firstName: 'Anis', familyName: 'Messaoudi', speciality: 'GL', option: 'DataScience (nchallah)'},
-                                           {firstName: 'Fares', familyName: 'hamouda', speciality: 'GL', option: 'DevOps'}];
 
-  }
+    getProfessors(){
 
-  getProfessors(){
-    return this.professors;
-  }
+      return this.http.get(`${environment.apiUrl}/teachers`, this.auth.getTokenHeader());
 
-  getProfessorById(id: number){
-    for(let professor of this.professors){
-      if(professor.id == id){
-        return professor;
-      }
     }
-    return null;
 
-  }
+    getProfessorById(id: string){
 
+     return this.http.get(`${environment.apiUrl}/teacers/${id}`, this.auth.getTokenHeader());
 
+    }
+
+    static getProfessorById(id: string){
+      for(let professor of ProfessorService.professors){
+        if(professor.id == id){
+          return professor;
+        }
+      }
+      return null;
+
+    }
 
 }

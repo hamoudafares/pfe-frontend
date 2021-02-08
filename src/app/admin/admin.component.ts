@@ -15,8 +15,7 @@ export class AdminComponent implements OnInit {
     isDeleting:boolean;
     currentUserDeleted:boolean;
 
-
-    constructor(private userService: UserService, private authenticationService: AuthenticationService, private router: Router) {
+    constructor(private userService: UserService, private authenticationService:AuthenticationService, private router: Router) {
         this.currentUser = this.authenticationService.currentUserValue;
      }
 
@@ -25,18 +24,24 @@ export class AdminComponent implements OnInit {
         console.log('what again?');
         this.userService.getAll().pipe(first()).subscribe(users => {
             this.loading = false;
-            console.log('im in');
+            console.log("im in");
+            console.log(users);
             this.users = users;
+            for(let i =0; i<users.length;i++){
+              //@ts-ignore
+              this.users[i].id = users[i]._id;
+            }
         });
     }
 
-    deleteUser(id: string) {
 
+
+    deleteUser(id: string) {
         console.log("id inside delete user",id);
         if(this.currentUser.id.toString()==id){
             this.currentUserDeleted=true;
         }
-        const user = this.users.find(x => x.id.toString() == id);
+        const user = this.users.find(x => x.id == id);
         if (!user) return;
         this.userService.delete(id).subscribe(
           () => {
@@ -46,11 +51,11 @@ export class AdminComponent implements OnInit {
         if(this.currentUserDeleted){
             this.logout();
         }
-
+        
       }
       logout() {
         this.router.navigate(["/login"]);
-        this.authenticationService.logout();
+        this.authenticationService.logout();  
       }
 
 }

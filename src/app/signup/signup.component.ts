@@ -13,39 +13,45 @@ import { UserService } from '../services/user.service';
 })
 export class SignupComponent implements OnInit {
   form!: FormGroup;
-    id!: string;
-    loading = false;
-    submitted = false;
+  id!: string;
+  loading = false;
+  submitted = false;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private userService: UserService,
-        private alertService: AlertService
-    ) {}
+  userRole:string;
+
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private userService: UserService,
+    private alertService: AlertService
+  ) {}
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-        
-        // // password not required in edit mode
-        // const passwordValidators = [Validators.minLength(6),Validators.required];
-        // passwordValidators.push(Validators.required);
 
-        const formOptions: AbstractControlOptions = { validators: MustMatch('password', 'confirmPassword') };
-        this.form = this.formBuilder.group({
-            cin: ['',Validators.required],
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            role: ['', Validators.required],
-            // password: ['', [Validators.minLength(6), Validators.required]],
-            // confirmPassword: ['', Validators.required]
-        }, formOptions);
+    // // password not required in edit mode
+    // const passwordValidators = [Validators.minLength(6),Validators.required];
+    // passwordValidators.push(Validators.required);
 
-            this.userService.getById(this.id)
-                .pipe(first())
-                .subscribe((x: { [key: string]: any; }) => this.form.patchValue(x));
-        
+    this.form = this.formBuilder.group({
+      cin: ['',Validators.required],
+      firstName: ['', Validators.required],
+      familyName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      role: ['', Validators.required],
+      speciality: ['', Validators.nullValidator],
+      annee: ['', Validators.nullValidator],
+      option: ['', Validators.nullValidator],
+      studentNumber: [0, Validators.nullValidator],
+      // password: ['', [Validators.minLength(6), Validators.required]],
+      // confirmPassword: ['', Validators.required]
+    });
+
+    this.userService.getById(this.id)
+      .pipe(first())
+      .subscribe((x: { [key: string]: any; }) => this.form.patchValue(x));
+
   }
 
   get f() { return this.form.controls; }
@@ -58,24 +64,29 @@ export class SignupComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.form.invalid) {
-        return;
+      return;
     }
 
     this.loading = true;
     this.createUser();
-}
+  }
 
 
   private createUser() {
     this.userService.create(this.form.value)
-        .pipe(first())
-        .subscribe(() => {
-            this.alertService.success('User added', { keepAfterRouteChange: true });
-            this.router.navigate(['/admin']);
-        })
-        .add(() => this.loading = false);
-}
- 
+      .pipe(first())
+      .subscribe(() => {
+        this.alertService.success('User added', { keepAfterRouteChange: true });
+        this.router.navigate(['/admin']);
+      }, error => {})
+      .add(() => this.loading = false);
+  }
+
+  changeRole(){
+    //@ts-ignore
+    this.userRole = this.form.controls['role'].value;
+  }
+
   // onSubmit(f: NgForm){
   //   console.log(f.value);
   //   console.log(f.value['password']);

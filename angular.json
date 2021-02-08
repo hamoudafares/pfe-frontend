@@ -24,7 +24,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
               "src/css/bootstrap.min.css",
               "src/css/main.css",
@@ -99,7 +99,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -135,6 +135,6 @@
   },
   "defaultProject": "pfe-frontend",
   "cli": {
-    "analytics": "7af61705-b8d0-4201-8e8b-936f3009e5d0"
+    "analytics": "621727d5-04f7-4221-b1cf-be47da6f0ff2"
   }
 }

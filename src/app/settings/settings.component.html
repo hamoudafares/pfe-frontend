@@ -1,5 +1,5 @@
 <h1>Paramètres</h1>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="serverLoaded">
     <div class="form-group col">
         <h3>Modifier la photo de profil</h3>
         <img class="rounded-circle test" [src]="urllink">

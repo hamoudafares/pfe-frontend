@@ -1,14 +1,22 @@
 import { Role } from "./role";
+import {Pfe} from "./pfe";
 
 export class User {
-    id: number;
-    cin: number;
+    id: string;
+    CIN: number;
     username: string;
     password: string;
     firstName: string;
-    lastName: string;
+    familyName: string;
     role: Role;
     token?: string;
+    salt:string;
     email: string;
     profilePic:string;
+
+
+    set _id(value: string){
+      this.id = value;
+    }
+
 }

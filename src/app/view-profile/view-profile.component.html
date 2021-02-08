@@ -13,18 +13,32 @@
         </div>
 
         <div class="col-sm-5 col-md-4 col-lg-3">
-          <div class="col-xs-6 col-sm-12">
+          <div class="col-xs-6 col-sm-12" *ngIf="professor.email!=''">
             <a href="mailto:{{professor.email}}" class="btn btn-block btn-default">
 
               <strong><i class="gi gi-envelope"></i> Envoyer un e-mail</strong>
             </a>
           </div>
-          <div class="col-xs-6 col-sm-12">
+          <div class="col-xs-6 col-sm-12" *ngIf="professor.linkedInLink!=''">
             <a href="https://www.linkedin.com/in/{{professor.linkedInLink}}" target="_blank" rel='noreferrer noopener'
-               class="btn btn-block btn-default" *ngIf="professor.linkedInLink!=''">
+               class="btn btn-block btn-default">
 
               <strong><i class="fa fa-linkedin-square"></i> LinkedIn</strong>
             </a>
+          </div>
+          <div class="col-xs-6 col-sm-12" *ngIf="userIsStudent && !requestSent">
+            <button rel='noreferrer noopener'
+               class="btn btn-block btn-default" (click)="sendRequestToProfessor()">
+
+              <strong><i class="fa fa-plus-square"></i> Ajouter ce prof comme encadrant</strong>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-12" *ngIf="userIsStudent && requestSent">
+            <button  rel='noreferrer noopener'
+               class="btn btn-block btn-danger" (click)="cancelRequestToProfessor()">
+
+              <strong><i class="fa fa-remove"></i> Annuler demande d'encadrement</strong>
+            </button>
           </div>
         </div>
 
@@ -41,7 +55,8 @@
       </div>
       <div class="widget-content widget-content-full">
         <div class="table table-borderless table-striped table-vcenter">
-            <div *ngFor="let etudiant of professor.etudiantsEncadre" class="student-row">
+            <div *ngFor="let etudiant of professor.etudiantsEncadre" class="student-row"
+            [routerLink]="['../../student/'+etudiant.id]">
               <div class="inline">
                 <h3 class="fa fa-male"></h3>
               </div>
@@ -63,6 +78,228 @@
       <div class="widget-content widget-content-mini themed-background-dark text-light-op">
 
       </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="student!= null">
+  <div class="content-header content-header-media-custom content-header-media">
+    <div class="header-section">
+      <div class="row">
+        <div class="col-sm-7 col-md-8 col-lg-9 content-float-hor push-bit-top-bottom clearfix">
+          <img [src]="student?.profilePicUrl" alt="photo de profile"
+               class="img-circle img-thumbnail img-thumbnail-avatar pull-left" *ngIf="student.profilePicUrl != null">
+          <img src="../../assets/male-avatar.png" alt="photo de profile"
+               class="img-circle img-thumbnail img-thumbnail-avatar pull-left" *ngIf="student.profilePicUrl == null">
+          <h1>
+            {{student.firstName}} {{student.familyName}}
+          </h1>
+          <h2>
+            {{student.speciality}}
+          </h2>
+          <h2 *ngIf="personIsEncadre" class="success">
+            Vous encadrez cette personne
+          </h2>
+        </div>
+        <div class="col-sm-5 col-md-4 col-lg-3">
+          <div class="col-xs-6 col-sm-12">
+            <a href="mailto:{{student.email}}" class="btn btn-block btn-default" *ngIf="student.email != null">
+
+              <strong><i class="gi gi-envelope"></i> Envoyer un e-mail</strong>
+            </a>
+          </div>
+          <div class="col-xs-6 col-sm-12">
+            <a href="https://www.linkedin.com/in/{{student.linkedInLink}}" target="_blank" rel='noreferrer noopener'
+               class="btn btn-block btn-default" *ngIf="student.linkedInLink!=''">
+
+              <strong><i class="fa fa-linkedin-square"></i> LinkedIn</strong>
+            </a>
+          </div>
+          <ng-container  *ngIf="userIsProfessor && student.encadrant == null">
+            <div class="col-xs-6 col-sm-12">
+              <button (click)="professorAddStudent()"
+                 class="btn btn-block btn-info">
+
+                <strong><i class="fa fa-check"></i>Encadrer cet etudiant</strong>
+              </button>
+            </div>
+
+            <div class="col-xs-6 col-sm-12">
+              <button (click)="professoRefuseRequest()"
+                 class="btn btn-block btn-danger">
+
+                <strong><i class="fa fa-remove"></i> Refuser Demande d'Encadrement</strong>
+              </button>
+            </div>
+          </ng-container>
+
+          <div class="col-xs-6 col-sm-12">
+            <btn target="_blank" rel='noreferrer noopener'
+               class="btn btn-block btn-danger" *ngIf="personIsEncadre">
+
+              <strong><i class="fa gi-circle_remove"></i> Annuler Encadrement</strong>
+            </btn>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <diV class="image-container">
+      <img src="../../assets/brick-wall.jpg" alt="INSAT" class="animation-pulseSlow">
+    </diV>
+  </div>
+  <div class="col-lg-6 col-md-6">
+    <div class="widget animation-fadeInQuick">
+      <div class="widget-content widget-content-mini border-bottom">
+
+          <h3>
+            informations personnelles
+            <i class="gi gi-circle_info inline pull-right"></i>
+          </h3>
+
+      </div>
+
+      <div class="widget-content widget-content-full">
+        <table class="table table-borderless table-striped table-vcenter">
+
+          <tr *ngIf="student.email != null" class="row">
+            <td class="text-center">
+              <strong>E-mail</strong>
+            </td>
+            <td class="text-center">
+              {{student.email}}
+            </td>
+          </tr>
+
+          <tr *ngIf="student.studentNumber != null" class="row">
+            <td class="text-center">
+              <strong>N° Carte d'etudiant</strong>
+            </td>
+            <td class="text-center">
+              {{student.studentNumber}}
+            </td>
+          </tr>
+
+          <tr *ngIf="student.speciality != null" class="row">
+            <td class="text-center">
+              <strong>Filière</strong>
+            </td>
+            <td class="text-center">
+              {{student.speciality}}
+            </td>
+          </tr>
+
+          <tr *ngIf="student.Option != null" class="row">
+            <td class="text-center">
+              <strong>Option</strong>
+            </td>
+            <td class="text-center">
+              {{student.Option}}
+            </td>
+          </tr>
+
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6">
+    <div class="widget animation-fadeInQuick">
+      <div class="widget-content widget-content-mini border-bottom">
+
+        <h3>
+          informations PFE
+          <button *ngIf="isSelf&&student.pfe == null" class="btn">Ajouter un pfe<i class="gi gi-plus"></i></button>
+          <button *ngIf="isSelf&&student.pfe != null" class="btn">Modifier votre pfe<i class="gi gi-cogwheel"></i></button>
+          <i class="gi gi-circle_info inline pull-right"></i>
+        </h3>
+
+      </div>
+
+      <div class="widget-content widget-content-full">
+        <table class="table table-borderless table-vcenter table-striped">
+          <tr *ngIf="student.pfe == null">
+
+            <td>
+              <h4 class="text-center"> Cette personne n'a pas encore choisi un PFE.</h4>
+            </td>
+
+            <td class="text-center">
+              <strong>Encadrant</strong>
+            </td>
+            <td class="text-center hover-lightup" [routerLink]="['../../professor/'+student.encadrant.id]" *ngIf="student.encadrant != null">
+              {{student.encadrant.toString()}}
+            </td>
+
+          </tr>
+
+          <ng-container *ngIf="student.pfe != null">
+            <tr class="row">
+              <td class="text-center">
+                <strong>Sujet</strong>
+              </td>
+              <td class="text-center">
+                {{student.pfe.sujet}}
+              </td>
+            </tr>
+
+            <tr class="row">
+              <td class="text-center">
+                <strong>Entreprise</strong>
+              </td>
+              <td class="text-center">
+                {{student.pfe.entreprise}}
+              </td>
+            </tr>
+
+            <tr class="row">
+
+            </tr>
+          </ng-container>
+
+        </table>
+      </div>
+
+      <div class="widget-content widget-content-mini border-bottom">
+
+        <h3>
+          Soutenance
+          <i class="fa fa-calendar inline pull-right"></i>
+        </h3>
+
+      </div>
+
+      <div class="widget-content widget-content-full">
+        <table class="table table-borderless table-vcenter table-striped">
+          <tr *ngIf="student.soutenance == null">
+
+            <td>
+              <h4 class="text-center"> La date de soutenance de cette personne n'est pas encore fixée </h4>
+            </td>
+          </tr>
+
+          <ng-container *ngIf="student.soutenance != null">
+            <tr class="row">
+              <td class="text-center">
+                <strong>Date</strong>
+              </td>
+              <td class="text-center">
+                {{student.soutenance.getDay()}}, {{student.soutenance.getDayDate()}}/{{student.soutenance.getMonth()}}/{{student.soutenance.getYear()}}
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="text-center">
+                <strong>Membres du jury</strong>
+              </td>
+              <td class="text-center">
+                {{student.soutenance.getJuryFormattedString()}}
+              </td>
+            </tr>
+          </ng-container>
+
+        </table>
+      </div>
+
     </div>
   </div>
 </ng-container>

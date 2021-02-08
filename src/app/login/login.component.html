@@ -25,7 +25,7 @@
 <div class="block animation-fadeInQuickInv login-container">
     <div class="block-title">
         <div class="block-options pull-right">
-        <a routerLink="/reset-password" class="btn btn-effect-ripple btn-primary" data-toggle="tooltip" data-placement="left" title="" style="overflow: hidden; position: relative;" data-original-title="Mot de passe oublié?"><i class="fa fa-exclamation-circle"></i></a>
+        <a routerLink="/reset-password" (click)="close()" class="btn btn-effect-ripple btn-primary" data-toggle="tooltip" data-placement="left" title="" style="overflow: hidden; position: relative;" data-original-title="Mot de passe oublié?"><i class="fa fa-exclamation-circle"></i></a>
         <!-- <a routerLink="/signup" class="btn btn-effect-ripple btn-primary" data-toggle="tooltip" data-placement="left" title="" style="overflow: hidden; position: relative;" data-original-title="Créer un compte"><i class="fa fa-plus"></i></a> -->
         </div>
         <h2 style="color: #454e59;">Se connecter</h2>
@@ -33,9 +33,9 @@
     <!-- <div class="card">
         <div class="card-body"> -->
 
-            <mat-dialog-content>
+            
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
-               
+                <mat-dialog-content>
                 <div class="form-group">
                     <label for="email" style="color: #454e59;">Email</label>
                     <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="Entrer votre email.."/>
@@ -60,8 +60,9 @@
                     </div>
                     <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
                 </div>
+            </mat-dialog-content>
+
             </form>
-        </mat-dialog-content>
         </div>
     <!-- </div>
 </div> -->

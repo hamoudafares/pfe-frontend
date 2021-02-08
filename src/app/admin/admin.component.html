@@ -2,14 +2,15 @@
     <h4 class="card-header">Admin</h4>
     <div class="card-body">
         <p>This page can be accessed <u>only by administrators</u>.</p>
-        <p class="mb-1">Current user (admin):</p>
+        <!-- <p class="mb-1">Current user (admin):</p>
         <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
         <ul *ngIf="users">
-            <li>{{currentUser.firstName}} {{currentUser.lastName}}</li>
-        </ul>
+            <li>{{users.firstName}} {{currentUser.familyName}}</li>
+        </ul> -->
         <a class="nav-item nav-link btn btn-rounded btn-primary" routerLink="/signup">Ajouter un utilisateur</a>
     </div>
 <br>
+
     <!-- listing all users -->
     <div class="panel col-lg-12">
         <div class=" header-section " style="width: 100%">
@@ -26,6 +27,7 @@
             <thead>
               <tr>
                 <th></th>
+                <th>ID</th>
                 <th>CIN</th>
                 <th>Prénom</th>
                 <th>Nom</th>
@@ -36,10 +38,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let user of users | filter:searchText">
-                <td><img src="assets/images/{{user.profilePic | defaultImage}}" alt="avatar" class="img-circle img-thumbnail img-thumbnail-avatar"> {{user.profilePic}}</td>
+                <td><img src="../../assets/{{user.profilePic | defaultImage}}" alt="avatar" class="img-circle img-thumbnail img-thumbnail-avatar"> {{user.profilePic}}</td>
+                <td>{{ user.id}}</td>
                 <td>{{ user.cin}}</td>
                 <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
+                <td>{{ user.familyName }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
                 <td >

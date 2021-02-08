@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DefaultImagePipe implements PipeTransform {
 
   transform(path: string): string {
-    if(! path.trim().length){
+    if(! path?.trim().length){
       return 'default.png';
     }
     else{
