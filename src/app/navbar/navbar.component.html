@@ -25,7 +25,7 @@
         </i>
       </a>
     </li>
-    <li *ngIf="!authenticationService.user">
+    <li *ngIf="authenticationService.user == null">
       <app-login id="loginId"></app-login>
       <a (click)="openDialog()">
         <strong>
@@ -118,6 +118,9 @@
           </li>
           <li>
             <a [routerLink]="['/soutenances']" class=""><i class="gi gi-calendar sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Calendrier PFEs</span></a>
+          </li>
+          <li>
+            <a [routerLink]="['/teacherlist']" class=""><i class="gi gi-book sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Liste Des Professeurs</span></a>
           </li>
           <!-- <li>
             <a  class="" style="padding-right: 10px;"><i class="fa fa-list-ul"></i><span style="margin-left: 10px;" class="sidebar-nav-mini-hide"> Liste des PFEs</span></a>

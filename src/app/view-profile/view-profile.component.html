@@ -114,12 +114,12 @@
               <strong><i class="fa fa-linkedin-square"></i> LinkedIn</strong>
             </a>
           </div>
-          <ng-container  *ngIf="userIsProfessor && requestReceived">
+          <ng-container  *ngIf="userIsProfessor && student.encadrant == null">
             <div class="col-xs-6 col-sm-12">
-              <button (click)="professorAcceptRequest()"
+              <button (click)="professorAddStudent()"
                  class="btn btn-block btn-info">
 
-                <strong><i class="fa fa-check"></i> Accepter Demande d'Encadrement</strong>
+                <strong><i class="fa fa-check"></i>Encadrer cet etudiant</strong>
               </button>
             </div>
 
@@ -209,6 +209,8 @@
 
         <h3>
           informations PFE
+          <button *ngIf="isSelf&&student.pfe == null" class="btn">Ajouter un pfe<i class="gi gi-plus"></i></button>
+          <button *ngIf="isSelf&&student.pfe != null" class="btn">Modifier votre pfe<i class="gi gi-cogwheel"></i></button>
           <i class="gi gi-circle_info inline pull-right"></i>
         </h3>
 
@@ -221,6 +223,14 @@
             <td>
               <h4 class="text-center"> Cette personne n'a pas encore choisi un PFE.</h4>
             </td>
+
+            <td class="text-center">
+              <strong>Encadrant</strong>
+            </td>
+            <td class="text-center hover-lightup" [routerLink]="['../../professor/'+student.encadrant.id]" *ngIf="student.encadrant != null">
+              {{student.encadrant.toString()}}
+            </td>
+
           </tr>
 
           <ng-container *ngIf="student.pfe != null">
@@ -243,12 +253,7 @@
             </tr>
 
             <tr class="row">
-              <td class="text-center">
-                <strong>Encadrant</strong>
-              </td>
-              <td class="text-center hover-lightup" [routerLink]="['../../professor/'+student.encadrant.id]">
-                {{student.encadrant.toString()}}
-              </td>
+
             </tr>
           </ng-container>
 

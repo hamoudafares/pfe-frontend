@@ -14,6 +14,8 @@ import {Role} from "./models/role";
 import {IndexComponent} from "./index/index.component";
 import {PfeComponent} from "./pfe/pfe.component";
 import {SubmitSoutenanceFormComponent} from "./submit-soutenance-form/submit-soutenance-form.component";
+import {TeacherListComponent} from "./teacher-list/teacher-list.component";
+import {StudentListComponent} from "./student-list/student-list.component";
 
 const routes: Routes = [
   {path: "soutenances", component:SoutenanceCalenderComponent},
@@ -34,6 +36,8 @@ const routes: Routes = [
   {path: "index",component:IndexComponent},
   {path: "pfe",component:PfeComponent},
   {path: "test",component:SubmitSoutenanceFormComponent},
+  {path: "teacherlist",component:TeacherListComponent},
+  {path: "studentlist",component:StudentListComponent},
   {path: '**', redirectTo: '' },
 ];
 

@@ -1,0 +1,39 @@
+
+<div class="panel col-lg-12">
+  <div class=" header-section " style="width: 100%">
+    <div class="form-group input-group">
+      <input type="text" class="form-control" placeholder="Chercher..." [(ngModel)]="searchText">
+      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    </div>
+  </div>
+  <div class="block-title">
+    <h2>Liste des utilisateurs</h2>
+  </div>
+  <div class="panel-body table-responsive">
+    <table class="table table-borderless table-vcenter table-striped">
+      <thead>
+      <tr>
+        <th></th>
+        <th>ID</th>
+        <th>CIN</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Speciality</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of teachers | filter:searchText">
+        <td><img src="../../assets/{{user.profilePic | defaultImage}}" alt="avatar" class="img-circle img-thumbnail img-thumbnail-avatar"> {{user.profilePic}}</td>
+        <td>{{ user.id}}</td>
+        <td>{{ user.cin}}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.familyName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.speciality }}</td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

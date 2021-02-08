@@ -1,7 +1,6 @@
-<div >
+<div *ngIf="authenticationService.user != null">
     <h1>LOGO</h1>
-    <a class="navbar-brand" routerLink="/login" routerLinkActive="active">Login</a>
-    <a class="navbar-brand" routerLink="/signup" routerLinkActive="active">Signup</a>
+    <a class="navbar-brand" routerLink="/signup" routerLinkActive="active" *ngIf="isAdmin()">Creer un Utilisateur</a>
     <a class="navbar-brand" routerLink="/reset-password" routerLinkActive="active">Reset Password</a>
     <div class="card mt-4">
         <h4 class="card-header">Home</h4>
@@ -11,6 +10,12 @@
         </div>
     </div>
 </div>
+<ng-container *ngIf="authenticationService.user == null">
+  <div class="row"><app-index></app-index></div>
+  <br>
+  <div class="row"><app-local-info></app-local-info></div>
 
 
 
+
+</ng-container>

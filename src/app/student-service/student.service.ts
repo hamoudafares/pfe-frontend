@@ -21,22 +21,17 @@ export class StudentService {
     return this.http.get(`${environment.apiUrl}/students`, this.auth.getTokenHeader());
   }
 
-  getStudentById(id: number){
+  getStudentById(id: string){
 
     return this.http.get(`${environment.apiUrl}/students/${id}`, this.auth.getTokenHeader());
 
   }
 
+  encadrerEtudiant(studId: string, profId: string){
+    let teacherCredentials = {teacherId: profId};
 
-  //MUSTREMOVE
 
-  static getStudentById(id: string): Student{
-    for(let student of StudentService.students){
-      if(student.id == id){
-        return student;
-      }
-    }
-    return null;
+    return this.http.patch(`${environment.apiUrl}/students/add-supervisor/${studId}`, teacherCredentials, this.auth.getTokenHeader());
 
   }
 

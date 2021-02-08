@@ -26,6 +26,8 @@ export class ViewProfileComponent implements OnInit {
   userIsStudent: boolean = false;
   userIsProfessor: boolean = false;
   personIsEncadre: boolean = false;
+  isSelf: boolean = false;
+  editMode: boolean = false;
 
   user: User;
 
@@ -92,7 +94,7 @@ export class ViewProfileComponent implements OnInit {
       activatedRoute.params.subscribe(params => {
         let id = params['id'];
         studentService.getStudentById(id).subscribe((studentData) =>{
-           this.student = Student.castToStudent(studentData);
+           this.student =studentData as Student;
 
           if (this.student == null) {
             this.noSuchPerson = true;
@@ -129,6 +131,12 @@ export class ViewProfileComponent implements OnInit {
               console.log(RequestEncadrement.requests);
 
             }
+            else if(this.user?.id == this.student.id){
+
+              this.isSelf = true;
+
+            }
+
 
           }
         });
@@ -161,7 +169,17 @@ export class ViewProfileComponent implements OnInit {
 
   }
 
-  professorAcceptRequest(){
+  professorAddStudent(){
+
+    this.studentService.encadrerEtudiant(this.student.id, this.user.id).subscribe((response)=>{
+
+        this.studentService.getStudentById(this.student.id).subscribe((studData)=>{
+          this.student = studData as Student;
+          this.personIsEncadre = this.student.encadrant?.id == this.user.id;
+        })
+
+      }
+    );
     // let request  = this.requestService.getRequestWithStudentAndProfessor(this.student.id, this.user.id);
     //
     // request.requestStatus = statusEnum.accepted;

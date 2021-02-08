@@ -35,6 +35,8 @@ import {FooterComponent} from "./footer/footer.component";
 import {LocalInfoComponent} from "./local-info/local-info.component";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from "@angular/material/dialog";
+import { TeacherListComponent } from './teacher-list/teacher-list.component';
+import { StudentListComponent } from './student-list/student-list.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     PfeComponent,
     DefaultImagePipe,
     FooterComponent,
-    LocalInfoComponent
+    LocalInfoComponent,
+    TeacherListComponent,
+    StudentListComponent
   ],
   imports: [
     BrowserModule,
